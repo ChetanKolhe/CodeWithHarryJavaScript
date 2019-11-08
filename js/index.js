@@ -7,6 +7,6 @@ console.log({a: "Cheta ",age : 98})
 console.table({a: "Cheta ",age : 98})
 console.error("This is the error message ")
 console.warn("This is the warning message ")
-// console.clear()
- console.timeEnd("mycode")
+console.timeEnd("mycode")
+
  
