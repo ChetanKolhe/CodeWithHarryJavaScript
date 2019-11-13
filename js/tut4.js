@@ -22,7 +22,7 @@ console.log("Data type of null value " + typeof demo);
 // Reference data type
 
 // Array
-var arry = [1,2,3,4,"String"];
+var arry = [1,2,3,4,"String"]; 
 console.log("Data type of null value " + typeof arry);
 
 // Json object
