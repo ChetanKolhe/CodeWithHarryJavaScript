@@ -35,6 +35,7 @@ console.log(html.replace(/is/g,"that",));
 
 
 let myHtml = `Hello ${name}
+
 <h1>This is the heading </h1>
 `;
 document.body.innerHTML = myHtml;

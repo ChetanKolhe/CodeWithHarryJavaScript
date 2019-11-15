@@ -1,5 +1,5 @@
 console.log("tut8.js");
-const age = 18;
+const age = 56;
 
 if (age == 19) {
     console.log("Age is 19");
@@ -32,6 +32,7 @@ switch (age) {
         console.log("Age is 18");        
         break;
     default:
+        console.log("This is default code");
         break;
 }
 
