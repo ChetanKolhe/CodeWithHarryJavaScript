@@ -27,4 +27,3 @@ console.log(a)
 a = document.scripts;
 console.log(a)
 
-
