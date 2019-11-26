@@ -10,6 +10,8 @@ const proto = {
     }
 }
 
+
+
 harry = Object.create(proto);
 harry.name = "Harry"
 console.log(harry);
