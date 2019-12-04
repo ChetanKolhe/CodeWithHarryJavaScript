@@ -5,12 +5,19 @@ let students = [
     { name: "Ketan", subject: "Python" }
 ];
 
-function enrolSturdin() {
+function enrolSturdin(student) {
     return new Promise(function(resolve,reject) {
         setTimeout(function () {
-            students.push(student);
-            
-    
+            let error = false;
+            if (!error){
+                students.push(student);
+                console.log("Succefully added into student list");
+                resolve()
+            }else{
+                console.log("Not able to add student");
+                reject("It fail to add student")
+            }
+                
         }, 3000);
     })
 }
@@ -33,10 +40,11 @@ function getStudent() {
 }
 
 
-// enrolStudents({ name: "chetan2", subject: "JavaScript" }).then(
-//     getStudent()).catch(
-//         function (demo) {
-//             console.log(demo);
-//         })
+enrolSturdin
+({ name: "chetan2", subject: "JavaScript" }).then(
+    getStudent()).catch(
+        function (demo) {
+            console.log(demo);
+        })
 
  
