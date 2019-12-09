@@ -14,3 +14,5 @@ async function harry() {
 
 let a = harry();
 a.then(data => console.log(data));
+
+console.log('this is log message');
