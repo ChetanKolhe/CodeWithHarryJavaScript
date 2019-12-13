@@ -1,0 +1,27 @@
+{
+    "tafServer": "192.168.32.74",
+    "probes": {
+        "1": {
+            "probe": "HDCA",
+            "probeAddApi": "",
+            
+            "details" : {
+                "ip": "192.168.33.42",
+                "username": "192.168.352",
+                "password": "Demo@1234"
+            }
+
+        },
+        "2": {
+            "probe": "HDCA",
+            "probeAddApi": "",
+            
+            "details" : {
+                "ip": "192.168.33.42",
+                "username": "192.168.352",
+                "password": "Demo@1234"
+            }
+
+        }
+    }
+}
