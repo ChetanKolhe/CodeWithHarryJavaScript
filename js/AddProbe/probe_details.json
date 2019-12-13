@@ -1,25 +1,26 @@
 {
-    "tafServer": "192.168.32.74",
+    "tafServer": "http://192.168.34.83:8080",
     "probes": {
         "1": {
             "probe": "HDCA",
-            "probeAddApi": "",
+            "probeAddApi": "/api/hdca/probe/DCNM/addProbe",
             
             "details" : {
-                "ip": "192.168.33.42",
-                "username": "192.168.352",
-                "password": "Demo@1234"
+                "ip": "192.168.33.245",
+                "protocol": "https",
+                "username": "admin",
+                "password": "dcnm@123"             
             }
-
         },
         "2": {
             "probe": "HDCA",
-            "probeAddApi": "",
+            "probeAddApi": "/api/hdca/probe/DCNM/addProbe",
             
             "details" : {
-                "ip": "192.168.33.42",
-                "username": "192.168.352",
-                "password": "Demo@1234"
+                "ip": "192.168.33.245",
+                "protocol": "https",
+                "username": "admin",
+                "password": "dcnm@123"             
             }
 
         }

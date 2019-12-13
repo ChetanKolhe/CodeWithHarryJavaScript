@@ -22,7 +22,7 @@ function postData(){
 
     let param = {
         body:data,
-        header:{"content-type":"application/json"},
+        header:{"Content-type":"application/json"},
         method:"post",
     }
 
@@ -32,5 +32,5 @@ function postData(){
     then(data =>console.log(data),error => console.log(error))
 }
 
-getData();
+// getData();
 postData();
