@@ -1,4 +1,4 @@
-console.log("This is tutorial of async and await ")
+// console.log("This is tutorial of async and await ")
 // async : it return promise.
 // await : it wait for promise to be complete.
 
@@ -14,3 +14,4 @@ async function harry() {
 
 let a = harry();
 a.then(data => console.log(data));
+console.log("This after promise message");
