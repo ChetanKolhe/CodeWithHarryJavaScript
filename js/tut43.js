@@ -14,4 +14,9 @@ async function harry() {
 
 let a = harry();
 a.then(data => console.log(data));
+<<<<<<< HEAD
 console.log("This after promise message");
+=======
+
+console.log('this is log message');
+>>>>>>> 2bb504df17d7298caa406d80f212bfec41d74c1f
