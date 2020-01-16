@@ -1,0 +1,98 @@
+Python Treading Tutorial
+1965 : Gordon E. Moore
+The number of transistors in a dense integrated circuit will continue to double approximately double every 2 years.
+
+What concurrency: is the execution of multiple instruction sequence at the same time .
+
+Order of Execution .
+Share Resource .
+
+
+Concurrency Types:
+1. Parallel Programming . ( Best suitted by CPU intensive task )
+	e.g
+	String operations
+	Search Algorithms
+	Grpahic Processing
+	Number Crunching
+	Algorithms
+
+
+2. Asynchronous Programming . ( Best suitted for IP bound task )
+	Delegating to task some other thread or actore and continue doing other work .
+	When subtask get completed it note back to main therad , this is generally called
+	callback function .
+
+	Database reads , wirtes .
+	Web Service calls
+	Copying , downloading , uploading data .
+
+
+Python support both parallel and Asynchronous Programming natively .
+threading 1.5 , multiprocessing 2.6+
+
+concurrent.futures 3.2
+asyncio 3.4
+
+
+
+Process :
+The execution context of a running program .
+or running instace of computer program .
+
+
+Thread : The smallest sequence of instruction that can be managed by operating system .
+
+
+How to create a Thread
+
+import threading
+
+def do_somework(val):
+    print("doing some work in thread")
+	print("Eval : {}".format(val))
+    return
+
+val = "text"
+t = threading.Thread(target=do_some_work, args=(val,))
+t.start()
+t.join()
+
+
+class threading.Thread(group=None,
+                       target=None,
+					   name=None,
+					   args=(),
+					   kwargs={},
+					   daemon=None
+					   )
+
+A boolean value indicating whether this thread is a daemon thread (True) or not (False).
+This must be set before start() is called, otherwise RuntimeError is raised.
+Its initial value is inherited from the creating thread;
+the main thread is not a daemon thread and therefore all threads created in the main thread default to daemon = False.
+
+
+Creating thread by using extending thread module .
+
+class myThread(theading.Thread):
+	def __init__(self):
+		super().__init__()    # Thead.__init__(self)   same thing can also be called in that way
+
+	def run(self):
+		print("This is running thread")
+
+my_feb_task =
+
+
+
+
+
+
+
+
+
+
+
+
+
