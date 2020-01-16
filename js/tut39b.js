@@ -40,11 +40,16 @@ function getStudent() {
 }
 
 
-enrolSturdin
-({ name: "chetan2", subject: "JavaScript" }).then(
+let demo = enrolSturdin({ name: "chetan2", subject: "JavaScript" })
+
+
+demo.then(
     getStudent()).catch(
         function (demo) {
             console.log(demo);
         })
 
+
+        
+ console.log('This message after promise');
  
