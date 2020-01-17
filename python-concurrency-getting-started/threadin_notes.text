@@ -333,10 +333,57 @@ Dis:
 Higher memory foot print .
 Expensive context swithch .
 
-
-
 Multiprocessing API
 It is design to similar to threading API
+
+e.g
+import multiprocessing
+import time
+def do_some_work(value):
+    time.sleep(10)
+    print(value)
+
+if __name__ == '__main__':
+    p1 = multiprocessing.Process(target=do_some_work, args=(12,), daemon=True)
+    p1.start()
+    p1.join()
+
+
+Pickling : Is the process where python ojbect hierchy is converted into bytestream .
+Unpickling : Is reverse operation .
+
+
+class multiprocessing.Process(group=None,
+							  target=None,
+							  name=None,
+							  args=(),
+							  kwargs=(),
+							  daemon=None)
+
+
+Daemon Process:
+is a child process that does not prevent its parent process from exiting .
+
+Terminating Process :
+Process is killable by operating system API .
+
+is_alive()
+terminate()
+
+p.exitcode : this attribute is used for determineing exit code .
+
+process.terminate()
+shared resources my be put in an inconsistent state .
+Finally clauses and exit handler will not be run.
+
+ProcessPools : An easy way to execute fixed pool of process .
+
+multiprocessing.Pool class .
+
+
+
+
+
 
 
 
