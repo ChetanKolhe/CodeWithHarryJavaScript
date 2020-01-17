@@ -82,7 +82,268 @@ class myThread(theading.Thread):
 	def run(self):
 		print("This is running thread")
 
-my_feb_task =
+my_feb_task = myThread(1)
+my_feb_task.start()
+my_feb_task.join()
+
+
+
+Thread Lifecycle
+
+New --> Ready --> Running -->Terminate
+			\		/
+			 \	   /
+			 Blocked
+
+
+Once thread had started we have little control over it .
+
+The Scheduler :
+ an operating system module that select next jobs to be admitted into the
+ system and the next process to run .
+
+
+Context Switch :
+the process of saving and restoring the state of a thread or process .
+
+Context switching using process to expensive rather than thread .
+This is one of the reason parallel programing using thread over thread .
+Parallel processing over processing .
+
+
+Thread Interferene .
+If resource share between thread , then most probably thread interferance will occure .
+Same thing also called as race condition .
+Due to that may be data corruption also occur .
+
+
+
+In multithreading , it is best practice to share minimum resource .
+
+
+
+Thread Synchronization
+
+threading>Lock
+
+	locked or unlocked
+
+	lock.acquire()
+	lock.release()
+
+example
+	lock = threading.Lock()
+	lock.acquire()
+	try:
+		...access shared resource
+	finally:
+		lock.release()
+
+using context manager (with) which is easy to manage acquizition and relasing locked
+
+example
+	lock = threading.Lock()
+
+	with lock:
+		...acess share resource .
+
+
+acquire() also take addtional argument boolean .
+which is used if lock is acquired then perform some other operation .
+
+if lock.acquire(false):
+	lock acquired, do stuff with lock
+else:
+	... could not acquire lock , do other stuff .
+
+
+there is other similar method also present
+
+if locke.locked():
+	do other stuff
+else:
+	lock.acquire()
+
+
+Catagory of lock.
+
+		Renterent Lock : RLock()
+
+lock = threading.Lock()
+lock.acqure()
+lock.acqurie()  # this call will block
+
+lock = threading.RLock()
+lock.acquire()
+lock.acquire()  # this call won't block
+
+
+
+
+
+Semaphore is another synchronization technique which manages internal counter .
+
+
+semaphore = threading.Semaphore(4)
+semaphore.acquire() # decrement the counter .
+... access the shared resource .
+semphore.release()  # increase the coutner .
+
+
+in common termnology semaphore maintain the set of permit .
+
+if relase() function get called multiple times it counter may increase more than 4  .
+
+to solve this problem  BoundedSemaphore introduced .
+num_permit = 3
+bounded_semaphore = threading.BoundedSemaphore(num_permit)
+
+
+
+
+Threding Event :
+one thread signal the event , other thread simply wait thread .
+
+
+event = threading.Event()
+
+# client thead can wait for the flag to be set
+event.wait()
+
+# server thread can set or reset it
+event.set()    # set the flage to true .
+event.clear()  # reset the flag to false.
+
+example
+	import threading
+	import time
+	event = threading.Event()
+	def consumer():
+		print("Consumer waiting for supplier permission")
+		event.wait()
+		print("Consumer given a permission ")
+
+
+	def supplier():
+		print("Setting the event")
+		event.set()
+
+	thread_1 = threading.Thread(target=consumer, args=())
+	thread_2 = threading.Thread(target=supplier, args=())
+	thread_1.start()
+	time.sleep(4)
+	thread_2.start()
+	thread_1.join()
+	thread_2.join()
+
+
+
+
+threding.Condition:
+It  just combine the property of lock and event .
+
+like locke , it have
+acquire() and release() method
+
+like event
+wait(), notify() , notify_all()
+
+
+Example
+
+cond = threading.Condition()
+# consumer one itme
+cond.acquire()
+while not an_time_is_availaible():
+    condi.wait()
+get_an_avaialable_itme()
+cond.release()
+
+# Produce one item
+make_an_item_available()
+cond.notify()
+cond.release()
+
+
+
+If we don't want to involve event , condition then use queue.
+
+Inter thread communication using Queues
+
+put() : Puts an item into the queue
+get() : Removes an item from queue.
+task_done(): Marks an itme that was gotten from the queue as completed / processed .
+It is used for joining main thread .
+
+join() : Block until all the itmes in the queue have been processed .
+
+
+Example :
+from threading import Thread
+from queue import Queues
+
+def producer(queue):
+	for i in range(10):
+		time = make_an_itemavailaible()
+		queue.put(item)
+
+def consumer(queue):
+	while True:
+		item = queue.get()
+
+		# do something with the item
+		queue.task_done()  # mark the item as done . I
+
+ queue = Queue()
+ t1 = Thread(target=producer, args=(queue))
+ t2 = Thread(target=consumer, args=(queue))
+ t1.start()
+ t2.start()
+
+
+ Global Interpreter Lock
+ The lock that prevent multiple native thread from executing Python code at same time .
+
+ Python threading is not thread , this most majority of people think .
+ To prevent race condition or thread interferance .
+
+
+ That allow to write python code easy .
+ It improve the single core performance .
+
+GIL Workarournds : GIL -less Python Interpretor
+		-- Jython
+		-- IronPython
+
+	Python Multiprocessing
+
+
+Multiprocessing :
+
+Process don't share memory and resources with other Process .
+But some exception to where process ask operyting system to share resource some singnal or calls .
+
+Adv :
+Side Steps GIL
+Less need for synchronization .
+Can be paused or terminated .
+More resilent
+
+Dis:
+Higher memory foot print .
+Expensive context swithch .
+
+
+
+Multiprocessing API
+It is design to similar to threading API
+
+
+
+
+
+
+
 
 
 
