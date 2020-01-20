@@ -459,6 +459,276 @@ There also other queue which also impliment task_done , join
 multiprocessing.JoinableQueue 
 										
 
+Multiprocess.Lock
+it used for accessing critical section of code between Process .
+
+Process Synchronization module present all the method which is present in threading .
+Lock, RLock , Semaphore, BoundedSeamphore , Event , Condition , Barier .
+
+Abstracting Concurrency : 
+In both threading and multiprocessing we used some kind of executor .
+In case of IO boud task it uses theading executor to execute task and return output .
+In case of CPU bound task it used process executor to execute task and return ouput .
+
+ 
+
+
+we can convert this high descripion into interface .
+in simple way
+
+def do_something():
+	print("Doing something ")
+	return
+
+executor = # new threadPool or processPool instance .
+future_result = executor.submit(sayhello, "Tim")
+
+
+
+for executing multiple function we may have map function .
+future_result = executor.map(sayHello, ["Time","Chetan"])
+
+
+Reason to switch Executors ?
+  i) Task mix IO and CPU .
+  ii) Change of Platform .
+ 
+Executor API .
+executor api is provided by "concurrent.future module" and exposes only 3 method.
+submit , map and shutdown .
+
+submit(fn, *args, **kwargs)  # Schedule a function to run . It return future object .
+map(fn,iterable, timeout , chunksize=1)
+shudown(wait=True) # stop accepting task and shutdown 
+
+ThreadPoolExecutor(max_worker=None, thread_name_prefix="")
+
+
+Example : 
+
+from concurrent.futures import ThreadPoolExecutor
+import threading
+import random
+import time
+
+
+def do_some_work():
+    sleep_time = random.randint(1, 9)
+    time.sleep(sleep_time)
+    print("I have complete the work ", threading.current_thread().name)
+    return sleep_time
+
+
+if __name__ == '__main__':
+    pool_exec = ThreadPoolExecutor(thread_name_prefix="My_Context")
+    f1 = pool_exec.submit(do_some_work)
+    f2 = pool_exec.submit(do_some_work)
+
+    print("Those are thread pool executor result ")
+    try:
+        print(f1.result())
+        print(f2.result())
+    except Exception as e:
+        print(e)
+
+
+#### For cpu bound task we should write the code in that way .
+from concurrent.futures import ProcessPoolExecutor
+import threading
+import random
+import time
+
+
+def do_some_work():
+    sleep_time = random.randint(1, 9)
+    time.sleep(sleep_time)
+    print("I have complete the work ", threading.current_thread().name)
+    return sleep_time
+
+
+if __name__ == '__main__':
+    pool_exec = ProcessPoolExecutor()
+    f1 = pool_exec.submit(do_some_work)
+    f2 = pool_exec.submit(do_some_work)
+
+    print("Those are thread pool executor result ")
+    try:
+        print(f1.result())
+        print(f2.result())
+    except Exception as e:
+        print(e)
+
+
+
+## Future Object 
+An object that act as proxy for a result that is yet to be computed .
+
+
+
+Future object is based for Asynchronous programing , 
+Internally pool_exec.submit or pool.map pool.map_async .. internally uses future object to accumplish this .
+
+future_obj = exector.submit(fun,*args, **kwargs)
+... do something 
+result = future_obj.result()
+
+executor is Actor  ===> where we submit the some task .
+
+futur_obj.cancel : it will cancel the execution. Return True if successful .
+done() : # Returns true if completed or canceled .
+
+exception(timeout=None) # Returns the exception if any .
+
+add_done_callback(fn) # attaches function to be called on completion or cancellation .
+multiple callback function can be added , it will get called in which order they get added .
+
+
+When we have future object we may need to wait when all are completed .
+concurrent.futures.wait(fs,timeout=None,return_when=ALL_COMPLETED)
+concurrent.futures.as_completed(fs,timeout=None) # It return iterator which contain any future object completed .
+
+Single Thereaded Asynchronous : 
+we can achive interleaving execution of task . 
+
+Thread ---> T1 , T4 , T3 ......
+
+It execute T1 for some time. then it interleave the executin and execute T4 . 
+after some time it then execute T1 again .   
+
+It best suited for IO bound task . 
+
+Implimentation of single threaded asynchroni is generally depend on event driven archtecture .
+Is software design that orchestrates behaviour around the production , dectection and consumption of events .
+
+
+
+Event Loop :  is responsible of getting items from an event queue and handling it .
+
+Event can be : change of File state , Timeout occuring , New data at network socket .
+
+
+In nodejs programing , event loop is invisible to the programer because it
+ implimented under the hood of v8 engine or libuv library
+
+But in case of python it is implicitly implimented .
+
+#### Coperative multitasking with Event loop and Coroutines . 
+asyncio.get_event_loop()  # It return an object of abstract event loop .
+
+AbstractEventLoop.run_forever()
+AbstractEventLoop.run_unitl_complete()
+
+AbastractEventLoop.stop()
+AbastractEventLoop.close()
+
+
+Cooperative Multitasking
+-- Tasks suspend themselves to allow other run .
+-- Event loop resume the task when the IO operation complete .
+-- Task ==> Corouting  comming . 
+
+There are two constuct in python which called coroutine .
+1. Coroutine Function 
+2. Coroutine Object 
+
+Coroutine Function :
+	It is a special function 
+    It give up the control to the caller without loosing its step .
+
+Exaple of Coroutine function are 
+
+import asyncio
+async def say_hello():
+    print("He bro I am learning asynchronous Programing ")
+
+
+event_loop = asyncio.get_event_loop()
+event_loop.run_until_complete(say_hello())
+event_loop.close()
+
+async keyword conver say_hello function to coroutine function .
+
+
+In python 3.4 generator are used to impliment courotine function .
+
+yield from 
+@asyncio.coroutine 
+
+Python 3.5 
+await and async are implimented 
+
+CoroutineObject = CoroutineFunction()
+
+Executing corutine function doesnt' mean that executing the instruction .
+Rater it return the coroutine object . 
+It coroutine object need to wrap into future object and passed it into event loop. 
+run_unitl_complete method internally wrap the function into future object and pass it to the event loop.
+
+
+
+
+Asyncio Future . 
+Future : It manages the execution and represent the eventual result of computation .
+
+
+
+Non-Blocking : 
+		asyncio.Future 
+			.result()
+			.exception()
+
+Blocking :
+	concurrent.future.Future
+		.result()
+		.exception()
+
+waiting for Future to complete .
+	await future # pause the execution untile future is done .
+
+if you are outside the function . 
+loop.run_unitl_complete(future) . It will wait for future to be complete .Loop stop after future complete .
+
+
+Task : Is a subclass of Future that is used to wrap and manage the execution of a coroutine in event loop . 
+
+Creating a Task 
+asyncio.ensure_future(coro_or_future, * ,loop=None)
+this function wrap coroutine into task . 
+
+Coroutine Chaning : 
+A coroutine awaiting another coroutine .
+
+
+Parallel Execution of task : 
+coroutine asyncio.wait(futures, *,
+						loop,
+						timeout,
+						return_when=ALL_COMPLETED)
+
+Return (DONE_FUTURE,PENDING_FUTURE)
+
+						
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
