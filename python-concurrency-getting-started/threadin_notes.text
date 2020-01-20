@@ -381,6 +381,83 @@ ProcessPools : An easy way to execute fixed pool of process .
 multiprocessing.Pool class .
 
 
+multiprocessing.Pool( num_of_process ,    # by defautl number of core	
+					  initilizer,         # initilizer function
+					  initargs ,          # picklable not required 
+					  maxtaxperchild ,    # by default it is none , meaning that worker process alive
+					                        as long as pool alive .
+											if value set , after executing number of times the worker process get killed 
+											and new process used .
+											This ensure that long running process periodically release the resources 
+
+
+											
+
+The most common use case of pool .
+
+pool.map(function , iterable object )
+
+Example :
+import multiprocessing
+
+def do_work(data):
+    return data**2
+
+def start_process():
+    print("Starting process",multiprocessing.current_process().name)
+
+if __name__ == "__main__":
+    process_count = multiprocessing.cpu_count() -1
+    process_pool = multiprocessing.Pool(processes=process_count,
+    initializer=start_process,maxtasksperchild=1)
+
+    input_list = list(range(10))
+    output  = process_pool.map(do_work,input_list)
+    print("Output", output)
+    process_pool.close()   # No more task submitted to pool .
+    process_pool.join()   # wait for worker process to exit .
+
+	
+	There are async version of map funtion also availaible .
+	
+	join() method should be called after termination of pool or close() 
+	
+
+
+Pool.map_async(func, iterable , chunks , callback , ) return AsyncResult 
+AsyncResult.get(timeout)  # Return a result when available
+AsyncResult.successful
+
+Similar function which take only one argument 
+Pool.apply()
+Poll.apply_async()
+
+Inter Process Communication 
+By default process don't share resources to each other .
+If process want to share resources between two process need to use os supported communication channel.
+if they want to exchange data between two channal.
+
+Pipe, Queue.
+
+Multiprocessing.Pipe : Represent two end connetion of the pipe
+
+Pipe() : It will return two connection object . conn1 will send data to conn2
+Pipe(True) : Connection is bidirection .  
+
+conn.recv() : it will wait for data .
+
+Pipe generally cause data corruption it to connection try to send data in one time .
+For this Queue is more modern or secure way for inter process connection .
+
+It also impliment all standard call which impliment in normal queue call .
+
+threading.Queue : qsize , put , get , empty , full , task_done , join,
+multiprocessing.Queue : qsize , put ,get ,empty , full
+
+
+There also other queue which also impliment task_done , join 
+multiprocessing.JoinableQueue 
+										
 
 
 
