@@ -77,7 +77,7 @@ Creating thread by using extending thread module .
 
 class myThread(theading.Thread):
 	def __init__(self):
-		super().__init__()    # Thead.__init__(self)   same thing can also be called in that way
+		super().__init__()    # Thread.__init__(self)   same thing can also be called in that way
 
 	def run(self):
 		print("This is running thread")
@@ -394,7 +394,6 @@ multiprocessing.Pool( num_of_process ,    # by defautl number of core
 											
 
 The most common use case of pool .
-
 pool.map(function , iterable object )
 
 Example :
@@ -470,9 +469,6 @@ In both threading and multiprocessing we used some kind of executor .
 In case of IO boud task it uses theading executor to execute task and return output .
 In case of CPU bound task it used process executor to execute task and return ouput .
 
- 
-
-
 we can convert this high descripion into interface .
 in simple way
 
@@ -482,8 +478,6 @@ def do_something():
 
 executor = # new threadPool or processPool instance .
 future_result = executor.submit(sayhello, "Tim")
-
-
 
 for executing multiple function we may have map function .
 future_result = executor.map(sayHello, ["Time","Chetan"])
@@ -503,21 +497,17 @@ shudown(wait=True) # stop accepting task and shutdown
 
 ThreadPoolExecutor(max_worker=None, thread_name_prefix="")
 
-
 Example : 
-
 from concurrent.futures import ThreadPoolExecutor
 import threading
 import random
 import time
-
 
 def do_some_work():
     sleep_time = random.randint(1, 9)
     time.sleep(sleep_time)
     print("I have complete the work ", threading.current_thread().name)
     return sleep_time
-
 
 if __name__ == '__main__':
     pool_exec = ThreadPoolExecutor(thread_name_prefix="My_Context")
@@ -531,20 +521,17 @@ if __name__ == '__main__':
     except Exception as e:
         print(e)
 
-
 #### For cpu bound task we should write the code in that way .
 from concurrent.futures import ProcessPoolExecutor
 import threading
 import random
 import time
 
-
 def do_some_work():
     sleep_time = random.randint(1, 9)
     time.sleep(sleep_time)
     print("I have complete the work ", threading.current_thread().name)
     return sleep_time
-
 
 if __name__ == '__main__':
     pool_exec = ProcessPoolExecutor()
@@ -558,12 +545,8 @@ if __name__ == '__main__':
     except Exception as e:
         print(e)
 
-
-
 ## Future Object 
 An object that act as proxy for a result that is yet to be computed .
-
-
 
 Future object is based for Asynchronous programing , 
 Internally pool_exec.submit or pool.map pool.map_async .. internally uses future object to accumplish this .
@@ -582,7 +565,6 @@ exception(timeout=None) # Returns the exception if any .
 add_done_callback(fn) # attaches function to be called on completion or cancellation .
 multiple callback function can be added , it will get called in which order they get added .
 
-
 When we have future object we may need to wait when all are completed .
 concurrent.futures.wait(fs,timeout=None,return_when=ALL_COMPLETED)
 concurrent.futures.as_completed(fs,timeout=None) # It return iterator which contain any future object completed .
@@ -600,12 +582,9 @@ It best suited for IO bound task .
 Implimentation of single threaded asynchroni is generally depend on event driven archtecture .
 Is software design that orchestrates behaviour around the production , dectection and consumption of events .
 
-
-
 Event Loop :  is responsible of getting items from an event queue and handling it .
 
 Event can be : change of File state , Timeout occuring , New data at network socket .
-
 
 In nodejs programing , event loop is invisible to the programer because it
  implimented under the hood of v8 engine or libuv library
@@ -620,7 +599,6 @@ AbstractEventLoop.run_unitl_complete()
 
 AbastractEventLoop.stop()
 AbastractEventLoop.close()
-
 
 Cooperative Multitasking
 -- Tasks suspend themselves to allow other run .
@@ -664,13 +642,8 @@ Rater it return the coroutine object .
 It coroutine object need to wrap into future object and passed it into event loop. 
 run_unitl_complete method internally wrap the function into future object and pass it to the event loop.
 
-
-
-
 Asyncio Future . 
 Future : It manages the execution and represent the eventual result of computation .
-
-
 
 Non-Blocking : 
 		asyncio.Future 
@@ -688,7 +661,6 @@ waiting for Future to complete .
 if you are outside the function . 
 loop.run_unitl_complete(future) . It will wait for future to be complete .Loop stop after future complete .
 
-
 Task : Is a subclass of Future that is used to wrap and manage the execution of a coroutine in event loop . 
 
 Creating a Task 
@@ -698,7 +670,6 @@ this function wrap coroutine into task .
 Coroutine Chaning : 
 A coroutine awaiting another coroutine .
 
-
 Parallel Execution of task : 
 coroutine asyncio.wait(futures, *,
 						loop,
@@ -707,7 +678,63 @@ coroutine asyncio.wait(futures, *,
 
 Return (DONE_FUTURE,PENDING_FUTURE)
 
+
+if you want to only wait for only one fuction call , then we can use this
+asyncio.wait_for(future, timeout ,loop=None)
+
+example : 
+		import asyncio
+
+
+		async def get_item(num):
+			print("get_item")
+			await asyncio.sleep(num)
+			return "item" + str(num)
+
+
+		async def get_items(num):
+			print("Get items")
+			items_cors = [get_item(i) for i in range(num)]
+
+			print("Waiting for task to complete")
+			complete, pending = await asyncio.wait(items_cors, timeout=2)
+
+			if pending:
+				print("Canceling remaining task ")
+				for t in pending:
+					print(type(t))
+					t.cancel()
+
+			result = [t.result() for t in complete]
+			print("Result : {!r}".format(result))
+
+
+		loop = asyncio.get_event_loop()
+
+		try:
+			loop.run_until_complete(get_items(4))
+		finally:
+			loop.close()
+
+
 						
+
+Example 2 : 
+try : 
+	result = asyncio.wait_for(task, 300)
+except asyncio.TimeoutError:
+	print("Task did not complete in 30 seconds so it was canceled ")
+
+if we want to yield the task as completed on that case use this method .
+asyncio.as_completed(fs,*,loop=None,timeout=None)
+
+Example : 
+for task in asyncio.as_completed(tasks):
+	result = await task 
+
+asyncio.gather(*cors, loop=None, return_exception=False)  
+return_exception=False : It will propogate the exception .
+return_exception=True : return exception is treated as result .
 
 
 	
@@ -720,7 +747,7 @@ Return (DONE_FUTURE,PENDING_FUTURE)
 
 
 
-
+https://docs.python.org/dev/library/asyncio-subprocess.html#asyncio-subprocess
 
 
 
