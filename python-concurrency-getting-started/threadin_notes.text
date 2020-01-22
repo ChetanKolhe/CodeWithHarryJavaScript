@@ -18,7 +18,7 @@ Concurrency Types:
 	Algorithms
 
 
-2. Asynchronous Programming . ( Best suitted for IP bound task )
+2. Asynchronous Programming . ( Best suitted for I/O bound task )
 	Delegating to task some other thread or actore and continue doing other work .
 	When subtask get completed it note back to main therad , this is generally called
 	callback function .
@@ -737,21 +737,49 @@ return_exception=False : It will propogate the exception .
 return_exception=True : return exception is treated as result .
 
 
-	
-
-
-
-
-
-
-
-
 
 https://docs.python.org/dev/library/asyncio-subprocess.html#asyncio-subprocess
 
 
 
 
+coroutine : 
+
+Python’s coroutines, special functions that give up control to the caller without losing their state.
+or 
+Generalize subrouting with non-preemptive multitasking by allowing execution suspended and resumed .
+
+subroutine : is sequence of program instruction that perform specfict , packaged as unit . Function .
+
+non-preemptive multitasking (cooperative multitasking) : A style of computer multitasking in which operating system 
+never initiates a context switch from running process . Istead process volunerly yield control 
+
+Coroutine very similar to threads , However , couroutines are cooperative multitasked , where
+threads are typically preemitively multitasked . This means that thread provide concurrency but not parallellism .
+
+Adv Coroutine: 
+switching between coroutine need not involve any system calls or any blocking calls whatsoever . 
+
+Generators, also known as semicoroutines.
+
+A Task is a subclass of Future that knows how to wrap and manage the execution for a coroutine. 
+Tasks can be scheduled with the event loop to run when the resources they need are available,
+ and to produce a result that can be consumed by other coroutines.
+
+
+Scheduling a Callback “Soon”
+loop.call_soon(wrapped, 2)
+
+Scheduling a Callback with a Delay
+To postpone a callback until some time in the future, use call_later(). 
+The first argument is the delay in seconds and the second argument is the callback.
+loop.call_later(0.1, callback, 2)
+
+
+Scheduling a Callback for a Specific Time
+now = loop.time()
+loop.call_at(now + 0.1, callback, 2, loop) 
+loop.call_at(monolitic_time , callback,parameter , parameter) 
 
 
 
