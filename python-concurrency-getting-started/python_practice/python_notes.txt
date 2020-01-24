@@ -1,0 +1,1613 @@
+
+
+
+
+Python Notes
+list=[]
+list.append(15)
+list.append(list1) e.g [23,34,[34,34]]
+list.extend(list1) e.g [23,34,34,34]
+
+list.pop(-1)  removing the top element
+list.pop()    removing the top element
+lsit.pop(index) poping the particual element
+
+It is possible to remove with the method "remove" a certain value from a list without knowing the position.
+list.remove("remove_object")
+
+list.index("search_object")
+list.index("search_object","starting_position","stopping_Possition")
+
+s.insert(index, object)
+
+The functionality of the method "append" can be simulated with insert in the following way:
+>>> abc = ["a","b","c"]
+>>> abc.insert(len(abc),"d")
+
+
+Shallow and Deep Copy
+
+shallow copy
+>>> x = 3
+>>> y = x
+>>> colours1 = ["red", "blue"]
+>>> colours2 = colours1
+colours2=deepcopy(colours1)
+
+
+Dictionary
+k in d
+True, if a key k exists in the dictionary d
+k not in d
+True, if a key k doesn't exist in the dictionary d
+
+
+
+Turn Lists into Dictionaries
+this funtion will convert the list
+zip()
+
+e.g
+zip(list1,list2,list2)
+
+
+set
+ A set contains an unordered collection of unique and immutable objects.
+ set :- mutable but contain is imutable
+
+ set1=set(1,3,4)
+
+
+ frozenset = both are imutable
+ frozenset(1,2,3,4)
+
+ improved notation
+ set1={1,2,3,4}
+
+ set Operation
+ add(element)
+ A method which adds an element, which has to be immutable, to a set.
+ clear()
+
+ difference() or "-" minux operator
+This method return the differene of two set
+example:-
+  x.difference(y)   x-y
+
+ discard(el)
+ element will be removed from the set
+
+
+ remove()
+ works like discard(), but if el is not a member of the set, a KeyError will be raised.
+
+
+ intersection(s)
+ return the common element
+
+ union(s)
+ return the union of two set
+
+ isdisjoint(s)
+ return True if two set intersection have no match or null match
+
+ insupperset()
+
+pop()
+removes and returns an arbitrary set element. The method raises a KeyError if the set is empty
+
+-----------------
+ternary if statement
+max = (a if (a > b) else b) * 2.45 - 4
+
+
+
+closure
+This technique by which some data ("Hello") gets attached to the code is called closure in Python.
+
+def print_msg(msg):
+	# This is the outer enclosing function
+
+    def printer():
+		# This is the nested function
+        print(msg)
+
+    return printer  # this got changed
+
+# Now let's try calling this function.
+# Output: Hello
+another = print_msg("Hello")
+another()
+We must have a nested function (function inside a function).
+The nested function must refer to a value defined in the enclosing function.
+The enclosing function must return the nested function
+
+--------------------------------
+
+python 3
+type hinting
+def demo(a :int, b:int)
+
+python 3.6 python interpolation.
+name=chetan
+machine=HP
+f
+
+
+
+
+
+===========================
+LEGB rule
+closures: maintain the the refernces of earlier scope
+It generaly used for function factory . Means function that return the new specialized function.
+def outer(value):
+  x = value
+  y = value
+  z = value
+  def inner():
+   return x+y
+  return inner
+
+
+
+"global" introduce the names from global namespace  to local namespace.
+"nonlocal" introduce the names from enclosing scope to local namespace. (it give the syntax error if no matching found.)
+
+decorator modify or enhance the function without modifying it.
+in python it implemented as callable object that takes and return the callables.
+
+possible way to define the decorator.
+class as decorator.
+instance as decorator.
+function as decorator.
+
+
+-------------------------------
+datetime
+datetime.datetime.now()  return the current time
+
+start_time = datetime.datetime.now()
+current_time = datetime.datetime.now()
+
+time_diff = current_time - start_time
+it return <datetime.timedelat> object
+e.g
+time delata object represent the gap of time .
+
+
+forwarding the date by 3 days
+now = now  + datetime.timedelata(days=3)
+
+ backwarding or old date by subtracting 3 days
+now = now + datetime.timedelata(days = -3)
+
+
+now = datetime.datetime.now()
+today = datetime.datetime.today()
+
+now and today both are same. The only difference that today take
+timezone
+
+Time and date in ceratain format
+strftime : it format the time
+now.strftime('%B %d')
+now.strftime('%m/%d/%y')
+now.strftime("%y%d%m")
+
+strptime is opposite of strftime.
+
+strftime : It represent the string representationf for date in specific format
+strptime : it convert the date and time from speceific string format
+
+--------------------------------------------------------------------
+Oraganising Large Program.
+Module : A single file which contiain the python code.
+Pacakage : This is also module which is the collection module.
+
+All class have metaclass.
+The default metaclass is Type.
+Metaclass is reponsible for processing the class defination
+parsed from source code into a class object.
+Metaclass convert parsed class namespace into a class object.
+
+__prepare__ method must return the mapping object which python runtime
+populate with the namespace items collected from parsing and executing the
+class defination.
+__new__ meta class method must allocate and return a class object and configure it using
+the contents of the namespaces, and list of baseclass from defination and any keyword argument.
+__init__ can furthour is used for configure the class object and must have the same signature as new.
+__call__() on metaclass is instance constructor.
+
+Metaclass can be used to impliment named descriptor.
+Strict rule contol the interaction of metaclass with inheritance.
+use supper() wisely for coperative metaclasses.
+
+
+
+Class Decorator:
+
+metaclass have lot for moving part so it some difficult to understand.
+Class Decorator is simple alternative.
+Anything which is achieve useing class decorator can also achieve using metaclass .
+on the other hand revers not true.
+
+class decorator < meta class.
+
+Conceptually class decorator is same as function decorator.
+
+
+
+ --------------------------------------------------------------------
+ Pacakage : a module which contain other package .
+ Package are generally directories .
+ __path__ and __package__
+locals() : buit-in function returns a dictionary mapping local varaible names to their values
+
+
+PYTHONPATH = Envionment variable listing path added to sys.path .
+
+
+absolute imports : import which used full path to the module .
+example :
+	from reader.reader import Reader
+
+realative imports : imports which use a relative path to module in same package.
+	from .reader import Reader
+
+
+" . " : single dot means current directory .
+" .. ": dobule dot means parent directory .
+
+
+my_package
+|
+|-- __init__.py
+|
+|-- a.py
+|
+|-- nested/
+	|
+	|
+	|-- __init__.py
+	|
+	|-- b.py
+	|
+	|-- a.py -----------> from .b import B
+						  from ..a import A
+
+if you want to execute then  it need to execute using
+python -m "nested.a"
+
+Relavtive Import Adv and Disadvantage .
+1. Can reduce a typing of deeply nested package .
+2. Promote certain mobility
+3. Can aid package renaming and refactoring
+4. General advise is to avoid them in most cases .
+
+
+__all__ : list of attribute names imported via from module "import *"
+
+
+ namespace package.
+ Package split across several direcotries.
+ namspace package have no __init__.py
+ This avoid the complex initialization ordering problem.
+
+ Then how does python know where to find the pacakage.
+ 1. Python scan all enteries of sys.path .
+ 2. If matching entery found in __init__.py is found ,a normal pacakge is imported .
+ 3. If foo.py is found, then it is loaded.
+ 4. Otherwise , all matching directories in sys.path are considered part of namespace package.
+
+
+Executable directories. Directory containg entry point for python execution.
+__main__.py file execute whenever we execute the directory.
+python know the zip file so we can also execute the zip file which contain __main__.py file.
+
+If we want to define the singleton object we can define at module level.
+Where module is initialize once .
+
+Beyond Basic Function :
+
+functional arguments come in two flavour.
+   positional argument
+   keyword argument
+
+	def funcation_name(args1,args2,args2=32)
+		print(args1,args2,args3)
+
+
+	function_name(12,args2=34)    --> argument which generally passed to called called "Formal Argument"
+	12 : Positional Argument
+	args2: Keyword Argument
+	32 : Default Argument
+
+
+DONOT WRITE MUTABLE OBJECT IN DEFAULT ARGUMENT LIST
+
+def my_function(b=[1,2,3]):
+    print(b)
+    b.extend([5])
+
+my_function()
+my_function()
+my_function()
+
+	def : It is keyword which is responsible for binding function object (which containg function function name to a function name .
+
+____________________________________________
+__call__ it make the instance callable just like any function.
+
+How to measure any module execution time.
+
+timeit inbuilt module which is used for determineing time.
+using command line
+
+python -m timeit -s "from resolver import main" -n 15 main()
+
+
+calling a class invoke the constructor
+example :
+	from resolver imort Resolver
+	resolve = Resolver()
+	same thing can be called like this
+	resolve = Resolver.__call__()
+
+
+#################################################
+Conditional Statement
+if conditon:
+	result = true_value
+else:
+	result = false_value
+
+Conditional Expression.
+resutl = true_value if condition else false_value
+#################################################
+
+Lambda
+Define the function without name .
+lambda argument : expression
+
+lambda function have any number of argument but only one expression.
+lambda function is used with map,filter,map.
+
+##########################################
+callable() is builtin function which true or false if instagne or object is callable .
+
+Extended formal argument syntax
+
+def fun(*args,**kwargs)
+
+
+following are also correct syntax
+def fun(args,args, *args, kwargs kwargs2, **kwargs4)
+
+The compliment of extended formal argument syntax is extended call syntax or
+extend actual syntax.
+
+
+###############################################
+Static method in Inheritance .
+It we want to override the static methode and want to acces the method from base class
+then use the "self" instead of "class" to call the override method.
+
+###############################################
+Class method with inheritance .
+Class method bheave polymorphically if we inherited with subclass.
+
+
+###############################################
+
+Encapsulation using @property decorator.
+e.g
+celcius = property(celcius)
+
+
+class Example:
+
+	@property
+	def celcius(self)
+		return self._celecious
+
+	@celcius.setter
+	def celcius(self,value):
+		self._cleciou = value
+
+if required to call base class setter function and access base class setter.
+use the following code
+
+    @RefrigeratedShippingContainer.celsius.setter    # If celcius is not define in this class
+    def celsius(self, value):
+        if value < HeatedRefrigeratedShippingContainer.MIN_CELSIUS:
+            raise ValueError("Temperature too cold!")
+        RefrigeratedShippingContainer.celsius.fset(self, value)
+
+
+#################################################
+String Representation.
+str() and repr() is string represention method of object in python .
+Each of which take object as input and produces the string representation of that object.
+
+str() is relay on __str__(),
+repr() is relay on __ repr__(),
+
+repr() it produces the unambiguous representation of string .
+It generaly contain information of object allog with input parameter.
+
+repr is innded for developer.
+It generally used logging or debugging purpose.
+Where as str intended for client.
+
+
+The special method __format__ is invoked by str.format()
+
+
+Replacement Fields
+{field_name:format_spec}
+Optional format specification after colon
+
+e.g
+class MyClass:
+	def __format__(self,r):
+		pass
+
+
+obj = MyClass()
+
+print("{:xyz}".format(obj))
+
+!r forces to use repr format
+"{!r}".format(obj)
+
+most cases we generally not depend on __formatl__, it relay on mostly str
+
+if str not implimented it uses the __repr__
+but reverse is not true.
+
+it forces to use str format
+"{!s}".format(obj)
+
+
+Standard lib reprlib which support alternative implementation of repr() function.
+limits excessive string length.
+usefull for large colleciton.
+
+
+reprlib.aRepr an instance used by Python and debuggers.
+standard library class reprlib.Repr
+-> It impliments the main fuctionality of reprlib.
+-> It support for customisation
+
+
+Built in string representation .
+ascii() , ord() ,chr()
+ascii() : It replace the non-ascii characters with escape sequences.
+ord() and char() are compliment to each other .
+ord(): convert a single charecters to its integer  Unicode codepoint.
+
+
+
+##################################################
+Numeric and scalar type
+
+int : int has unlimited precision signed integer.
+float: IEEE-754 double precision (64bit)
+53 bits of binnary precision.
+15 to 17 bit of decimal precision.
+
+(1 bit signed bit ) (11 bit exponent ) (52 is to represent fraction)
+
+
+we can get the float information current interpreter using sys module.
+
+import sys.
+sys.float_info
+
+float(2**53)
+>>9007199254740992.0
+float(2**53 + 1)
+>>9007199254740992.0
+float(2**53 + 2)
+>>9007199254740994.0
+
+
+e.g
+0.8 - 0.7
+Above number can't be represent correctly in binnary format in python.
+so generated result my get the different value .
+e.g
+>>> 0.9 - 0.1 == 0.8
+True
+>>> 0.8 - 0.7 == 0.1
+False
+
+
+Python has support of different number type to avoid these type of problem
+by different tradeoff.
+
+
+Python Decimal Module:
+
+class Decimal:
+
+It is a fast correctly rounded type in python standard lib.
+configurable(although finite) precision.
+defaul to 28 digit for decimal precision.
+
+
+>>> import decimal
+>>> # It determine how the decimal module is configurable.
+>>> decimal.getcontext()
+Context(prec=28, rounding=ROUND_HALF_EVEN, Emin=-999999, Emax=999999, capitals=1, clamp=0, flags=[], traps=[InvalidOperation, DivisionByZero, Overflow])
+
+>>> from decimal import Decimal
+>>> Decimal(0.8) - Decimal(0.7)
+Decimal('0.1000000000000000888178419700')
+>>> Decimal('0.8') - Decimal('0.7')
+Decimal('0.1')
+
+To avoid the above problem we can set the value so Decimal won't perform any operation on float.
+>>> decimal.getcontext().traps[decimal.FloatOperation] = True
+>>> Decimal(0.8) - Decimal(0.7)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+decimal.FloatOperation: [<class 'decimal.FloatOperation'>]
+
+
+Dcimal also support for sepcial value .
+Decimal(Infinity),Decimal("-Infinity"),Decimal("NaN")
+
+(-7)//3
+>> -3
+(-7)%3
+>> 2
+
+Decimal("-7") // Decimal("3")
+>> Decimal('-2')
+
+
+Decimal module doesn't have support for math module.
+so it has the inbuil functionality to do some math opertion.
+
+######################################################
+standard libaray fraction which contain Fraction class for rational number.
+what is rational number.:
+2/3,4/5 those are rational number which contain denominator and numerator.
+the important constraint is that denominator must be non-zero.
+
+>>> from fractions import Fraction
+>>> two_third = Fraction(2,3)
+>>> two_third
+Fraction(2, 3)
+>>> four_fifth = Fraction(4,5)
+>>> four_fifth
+Fraction(4, 5)
+
+>>> Fraction(20,0)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+  File "/usr/lib/python3.6/fractions.py", line 178, in __new__
+    raise ZeroDivisionError('Fraction(%s, 0)' % numerator)
+ZeroDivisionError: Fraction(20, 0)
+>>> Fraction(0)
+Fraction(0, 1)
+
+>>> Fraction(111111111111111111111111111111111)
+Fraction(111111111111111111111111111111111, 1)
+
+>>> Fraction(0.1)  # Not that fraction give some different value  representation.
+Fraction(3602879701896397, 36028797018963968)
+
+>>> Fraction(0.5)
+Fraction(1, 2)
+
+>>> Fraction(Decimal("0.1"))
+Fraction(1, 10)
+
+>>> two_third + four_fifth
+Fraction(22, 15)
+>>> two_third - four_fifth
+Fraction(-2, 15)
+>>> two_third * four_fifth
+Fraction(8, 15)
+>>> two_third / four_fifth
+Fraction(5, 6)
+>>> two_third // four_fifth
+0
+>>> two_third % four_fifth
+Fraction(2, 3)
+
+Fraction can be used with math module.
+
+###############################################
+build in type complex
+It doesn't need to import the lib.
+Python support special syntax to represent the complex number.
+e.ga
+4 + 5j
+	j: is act like i (imaginary part).
+python uses the electrical engineering notation for imaginary part.
+
+
+complex construction:
+string argument may have parentheses but must not contain space .
+>>> complex(4 + 5j)
+(4+5j)
+>>> complex("(43+5j)")
+...
+(43+5j)
+>>> complex("(43 +5j)")
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+ValueError: complex() arg is a malformed string
+
+c = complex("4+5j")
+c.real
+c.imag
+
+c.conjugate()
+
+complex number cann't use with math module.
+but same operation can be perform using cmath module.
+
+import cmath.
+cmath.sqrt(-1)
+
+
+############################################################
+Built in abs() : gives the distance from zero.
+round(): performs decimal rounding for all scalar number types.
+In case of two equal parts on that case rounding happen to even faces.
+
+e.g
+1.5 = 2
+2.5 = 2
+3.5 = 4
+4.5 = 4
+2,4 are even number.
+
+
+round(2.675,2)
+2.67
+round() can show surprising behaviour with float values which can't represented exactly binnary.
+
+Number Base Conversion.
+int("2a",16)
+>> 42
+
+int(x, bases) : uses 0-9 and a-z for digits in bases from 2 to 36
+specifying bases zero uses the base prefix , default to decimal.
+
+bin(),hex(),oct() are inbuild function which are used for converting data.
+
+
+
+#############################################
+datetime --> (date,time)
+
+data --> (year,month,day)
+time --> (hour,minute,seconds,microseconds)
+
+time classfy into two type.
+	: naive mode : where it has no information about daylight saving mode
+	: aware : it aware of time zone and day light saving mode.
+
+	tzinfo  -- > timezone
+
+all above object imutable .
+
+date example :
+It give the date from 1970-01-01
+>>> date_e = datetime.date.fromtimestamp(1)
+1970-01-01
+
+>>> date_e = datetime.date.fromtimestamp(20000000)
+1970-08-20
+
+>>> today_date = datetime.date.today()
+>>> d = datetime.date.today()
+
+>>> d.isocalendar()
+(2019, 20, 1)
+
+>>> d.isoformat()
+'2019-05-13'
+
+>>> d.isoweekday()
+1
+
+>>> d.weekday()
+0
+
+To print the date in particular format .
+>>> d.strftime("%A %d %b %Y")
+'Monday 13 May 2019'
+
+>>> "The date is {:%A %d %b %Y}".format(d)
+'The date is Monday 13 May 2019'
+
+>>> "{date:%A} {date.day} {date:%B} {date.year}".format(date=d)
+'Monday 13 May 2019'
+
+
+time class is used to represent the time without date .
+It has optional parameter timezone.
+
+>>> t = datetime.time(10,32,47,243234)
+>>> t.hour
+10
+>>> t.minute
+32
+
+>>> "{t.hour} Hour {t.minute} Minute {t.second} Seconds".format(t=t)
+'10 Hour 32 Minute 47 Seconds'
+
+#################################################
+datatime class
+
+while importing datetime always assign to some alias
+for example
+
+from datetime import datetime as Datetime.
+
+>> from datetime import datetime as Datetime
+>>> Datetime.today()
+datetime.datetime(2019, 5, 13, 17, 14, 7, 308643)
+>>> d  = datetime.datetime(2019, 5, 13, 17, 14, 7, 308643)
+
+datetime.datetime(2019, 5, 13, 17, 14, 7, 308643)
+>>> datetime.datetime.today()
+datetime.datetime(2019, 5, 13, 19, 2, 46, 364784)
+>>> datetime.datetime.now()
+datetime.datetime(2019, 5, 13, 19, 2, 53, 821222)
+>>> datetime.datetime.utcnow()
+datetime.datetime(2019, 5, 13, 13, 33, 3, 950092)
+>>> datetime.datetime.fromordinal(5)
+datetime.datetime(1, 1, 5, 0, 0)
+>>> datetime.datetime.fromtimestamp(56654)
+datetime.datetime(1970, 1, 1, 21, 14, 14)
+
+# Combine the date and time using combine method
+>>> d = datetime.date.today()
+>>> t = datetime.time(8,15)
+>>> datetime.datetime.combine(d,t)
+datetime.datetime(2019, 5, 13, 8, 15)
+
+# strptime() : string parse time
+syntax : strptime("string ",format)
+datetime_str = '09/19/18 13:55:26'
+datetime_object = datetime.strptime(datetime_str, '%m/%d/%y %H:%M:%S')
+
+
+##############################################################
+A timedelta object represents a duration, the difference between two dates or times.
+timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
+but internally only three values are stored
+days, seconds and microseconds.
+
+td = timedelta(seconds=5)
+datetime.timedelta(0, 5)
+str(td)
+>> '0:00:05'
+td = timedelta(seconds=150000)
+>> str(td)
+'1 day, 17:40:00'
+td.days
+>> 1
+
+Airthmatic on timedelata
+t1 = t2 + t3,t1 = t2 - t3
+,t1 = t2 * i or t1 = i * t2,
+t1 = t2 * f or t1 = f * t2,
+f = t2 / t3,
+t1 = t2 / f or t1 = t2 / i,
+t1 = t2 // i or t1 = t2 // t3,
+t1 = t2 % t3,
+q, r = divmod(t1, t2),
++t1,
+-t1,
+abs(t),
+str(t),
+repr(t)
+
+##################################################
+Timezone.
+Time Zone and Daylight Saving mode are very are very complex domain mired(stuck) in
+international politics and which could changed in anytime.
+As such python standard library doesn't include an exhustive time zone database.
+If you need up to datetime zone info you need to use pytz and dateutil module.
+
+tzinfo is abstract class which is used for providing the timezone info.
+timezone it impliment tzinfo.
+
+e.g
+cet = datetime.timezone(datetime.timedeltat(hours=1),"CET")
+ How to use in timezone creation.
+ departure = datetime.datetime(year=2014,month=1,hour=11,minute=30,tzinfo=cet)
+
+
+##################################################
+Iterable and iteration
+comprehension short hand syntax for creating collection and iterable object.
+
+l = [i for i in range(23)]
+d = {i:i*2 for i in range(20)}
+comprehension can use multiple input and multiple if clause .
+multi_input = [(x,y) for x in ragne(2) for y in range(2)]
+
+
+multi_input = [x/x-y
+			   for x in range(100)
+			   if x > 50
+			   for y in range(100)
+			   if x-y!=0
+			   ]
+
+comprehension can be nested inside the other comprehension.
+val = [[y *3 for y in range(x)] for x in range(v)]
+
+iteration and  iterables + building-block functions.
+map(): apply a function to every element in sequence , producing a new sequence .
+
+e.g
+demo = map(ord, "Chetan Kolhe")
+for i in demo:
+	print(i)
+
+
+
+Multiple Input sequences
+map can accept any number of sequence.
+e.g.
+ 	def combine(quantity, size, color, animal):
+		return '{} x {} {} {}'.format(quantity, size ,color, animal)
+
+	list(map(combine,itertools.count(),[1,23,4],[2,2,2],[3,3,3]))
+	['0 x 1 2 3', '1 x 23 2 3', '2 x 4 2 3']
+
+	when any of input sequence exhausted it stop the iteration.
+
+map and list comprension both are working similar.
+what ever achive using map also achieve using list comrehension.
+
+
+filter():
+apply a function to each element in a sequence , constructing new sequence
+with the elements for which the function returns True.
+It is simlar to list. It also evaluate the result lazily.
+
+positive = filter(lambda x : x > 0,[12,3,4,-5,-6,4,6])
+
+Passing None as the first argument to filter() will remove elements which evaluate to false.
+
+e.g
+
+positive = filter(None , [1,2,5,-5,-6,5,True,False , 0 , "","hello"])
+>>list(positive)
+>>[1, 2, 5, -5, -6, 5, True, 'hello']
+
+functools.reduce : It repeatedly apply a function to the elements of sequence,reducing them
+to a single value.
+
+from functools import reduce
+from operator import add
+result = reduce(add,range(50))
+result
+1225
+
+
+reduce also take the optional value if we not pass any value to it accumalte as initialization
+value
+e.g
+
+result = reduce(add,[],0)
+result
+>> 0
+
+
+result = reduce(add,[1,2],0)
+result
+>>3
+
+#####################################
+Combining map and reduce.
+It will use for map-reduce algorithm.
+
+
+
+####################################
+Python Iteration.
+iter()
+Create the iterator
+
+next()
+Get the next element
+
+StopIteration()
+
+
+
+iterable : It is an object which impliment __iter__() method.
+
+iterator: an object which impiment iterable protocol and which
+		impliment __next__ method.
+
+
+
+iter() it return the iterator object.
+The iter() method takes two parameters:
+
+		object - object whose iterator has to be created (can be sets, tuples, etc.)
+		sentinel (Optional) - special value that is used to represent the end of a sequence
+
+
+
+class ExampleIterator:
+    def __init__(self, data):
+        self.index = 0
+        self.data = data
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index >= len(self.data):
+            raise StopIteration()
+
+        rslt = self.data[self.index]
+        self.index += 1
+        return rslt
+
+class ExampleIterable:
+    def __init__(self):
+        self.data = [1, 2, 3]
+
+    def __iter__(self):
+        return ExampleIterator(self.data)
+
+
+alerternative iterable protocol works with any object that supports
+consecutive inte indexing via
+__getitem__
+
+
+
+################################################################################
+Inheritance and Subtype Polymorphism
+
+Inheritance :
+
+multiple inheritance.
+
+class SimpleList
+	def add()
+	def sort()
+
+class SortedSimpleList(SimpleList)
+	def add()
+
+class IntSimpleList(SimpleList):
+	def add()
+
+
+isinstance(): determine if an object is of specified type.
+issubclass() : determine one class is subclass of another .
+
+multiple inheritance : defineing class with more than one base class.
+
+class SubClass(basecLass, baseclass)
+
+
+Subclass inherit method of all base calls .
+Without conflict , name resolve in the obvious way.
+Methodr Resoloution is for name lookup.
+
+How does python maintain both the constraint ?
+How does pytho know which method to call ?
+Ans:
+By using Method Resolution Order and super() .
+
+
+__bases__ : it return the tuple of base class from which it inherited.
+
+Method Resolutiont Order: Ordering that determine name lookup.
+commonly called MRO.
+Method may be defined in multiple places.
+MRO is ordering of inheritance grap.
+
+className.__mro__ it return tuple.
+className.mro() it return the mro of list.
+
+
+
+How the python calculate the MRO of class  ?
+It uses the C3 algorithm for calculating MRO in Python.
+ 1. Subclass come before the base class.
+ 2. Base class order from class definatin is preserved.
+ First two qualities are preserved no matter where you are started
+ in inheriance grap.
+
+Valid Path:
+class A:pass
+class B(A):pass
+class E:pass
+class F(E):pass
+class Result(B,F,E):pass
+print(Result.__mro__)
+
+Invalid Path:
+class A:pass
+class B(A):pass
+class E:pass
+class F(E):pass
+class Result(B,E,F):pass
+print(Result.__mro__)
+
+
+How super work ?
+Given a method resolution order and a class C.
+Super() gives you an object which resolves methods using only the part
+of the MRO which comes after C.
+
+
+Super return the proxy object which routes the method calls .
+
+Bound Proxy: Bound to specific class or instance .
+Unbound Proxy: Not bound to class or  instance.
+
+
+
+
+
+
+
+###################################################
+
+Collection Protocol.
+
+container : member testing using "in" and "not in "
+size : Determine the number of item in collection len(list)
+iterable : Can produce iterator using iter(obj)
+sequence: Retrive the element using index
+          item = seq[index]
+
+		  Find the item by value
+		  index = seq.index(item)
+
+		  count item
+		  num = seq.count(item)
+
+		  Produce the reversed sequence
+		  r = reversed(seq)
+
+
+set : which perform the various set operation using algebra.
+      e.g subset,proper subset, equal , not equal , intersection , union , symmetric difference.
+
+
+Lets create as SortedSet
+A collection which is sized , iterable , sequence, container of set of distinct item .
+and constructable from constructor.
+
+
+
+__contains__ : it used to implement conatianer protocol .
+
+e.g
+def __contains____(self,item)
+	if item in self.__item
+
+
+The sized Protoco:
+__len__ is used to determine the size of item sing len(item) function.
+
+
+sequnce protocol:
+It relies on container, sized, iterable protocol.
+
+
+def __getitem__(self, index):
+	result = self._items[index]
+	return SortedSet(result) if isinstance(index, slice) else result
+
+Producing the reverse sequence :
+r = reversed()
+special method : __reversed__() need to override.
+Fallback to __getitem__() and __len__()
+
+
+Finding by value.
+if we already override __getitem__ and __len__ then wen can easily add the
+support for index.
+we need inherited the base class sequence from abc.collection.
+
+e.g
+from collection.abc import Sequence
+just inherited the sequnce , it automatically provide some functionality like finding
+the index by value.
+
+It required to impliment __len__ and __getitem__.
+
+
+Creating random value of following range.
+e.g
+from random import randrange
+randrange(100)
+
+
+Concatination with + operartor we need to override __add__ method.
+Multiplication * operator we need to override the __mul__ method and __rmul__
+__rmul__ is required when operand is right hand side on that time it required to override.
+but it is generally good practic to override it.
+
+Set Protocol:
+
+
+
+Sequence Protocol count:
+
+
+
+
+Exception are arranged in inheritance hierachy
+
+Exception Payload:
+	Most exception payload contain the diagnostic information
+	what cause the exception.The majority of buit in exception types
+	accept a simple string in the constructor call .
+
+	e.args --> return tuple
+	PE352: is quite clear on matter , no restriction is placed upon
+	what may be passed in for args for backward-compatibility reason .
+	In practice, though only a single string argument should be used.
+
+	That said specific exception classed may provide additional specific named
+	attribute which contain further information in case of debugging.
+
+	e.g
+	for UnicodeError
+		e.encoding, e.reason, e.object, e.start_time
+
+Chaining Exception:
+	Exception chaining allow us to associate one exception with another.
+	In 2 cases exception occur.
+	1. Durring processing of one exception another exception occure.
+	2. when we need to delibratly handl the exception by translating into different
+	   Exception type.
+
+	Implicit Chaining : When one exception occur while another is being processed.
+	the python runtime machinory associates the original exception with the new exception by
+	setting the __context__ to most recent exception.
+
+
+	def main():
+    try:
+        a = triangle_area(3, 4, 10)
+        print(a)
+    except TriangleError as e:
+        try:
+            print(e, file=sys.stdin)
+        except io.UnsupportedOperation as f:
+            print(e)
+            print(f)
+            print(f.__context__ is e)
+
+	o/p:
+	'Illegal triangle' for sides (3, 4, 10)
+	not writable
+	True
+
+	The converse of implicit chaining is explicit chaining.
+	When we delibratily associate existing exception instance to
+	new instance exception object at point latter is raised.
+
+	explicit exception associate one one exception to another using __cause__
+
+	class InclinationError(Exception):
+    pass
+
+
+	def inclination(dx, dy):
+		try:
+			return math.degrees(math.atan(dy / dx))
+		except ZeroDivisionError as e:
+			raise InclinationError("Slope cannot be vertical") from e
+
+	main()
+		try:
+			inclination(0,5)
+		except InclinationError as e:
+			print(e)
+			print(e.__cause__)
+
+	Note: "from e " which explicitly bound the exception .
+
+	Traceback:
+	It is record of stack which get printed when exception occure.
+
+	In python 3 , each exception has __traceback__ attribute which associated
+	with exception.
+
+	If we want to print the trace back then use the std lib traceback
+
+	traceback.print_tb(e.__traceback__)  # It print the traceback.
+
+	traceback.format_tb(e.__traceback__) # It return the string .
+
+	Don't keep refferences to __traceback__ beyond the scope of except block.
+	Prefer to render the __traceback__ in string .
+# Checking invarient with asserations.
+assert : Is help you prevent the bug creeping into your code.
+syntax:
+	assert condtion [message,]
+	Fase : It raise AssertionError
+	if message is supplied it used as ExceptionPayload.
+
+Execuiting python code without asseration.
+python3 -O script.py
+
+Executing python code with asseration
+python3 script.py
+
+
+
+Context Manager:
+Those object is design the to use with "with" statment
+
+with context-manager:
+	enter()
+	body
+	exit()
+
+	here enter and exit always execute no matter if there is exception or anything.
+
+	Context manager ensuere that resource are properaly and automatically managed.
+	enter() : it prepare the manager for use.
+	clean() : clean it up.
+
+    to impliment the context manager , it required to impliment following method
+	__enter__(self)
+	__exit__(self,exc_type,exc_val,exc_tb)
+
+	with expression as x:
+		body
+
+	with "with" statement it evaluate the expression . evaluated expression must be
+	context manager.
+
+	then context-manager called __enter__()
+
+
+	Important value of expression.__enter__() is bound to x , not the value of expression.
+	Then it execute body.
+	After executing the body or some exception occure , it execute the __exit__ block.
+
+	e.g
+
+	class LoggingContextManager:
+    def __enter__(self):
+        print('LoggingContextManager.__enter__()')
+        return "You're in a with-block!"
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is None:
+            print('LoggingContextManager.__exit__: '
+                  'normal exit detected')
+        else:
+            print('LoggingContextManager.__exit__: '
+                  'Exception detected! '
+                  'type={}, value={}, traceback={}'.format(
+                      exc_type, exc_val, exc_tb))
+
+
+
+
+	exception automatically propogated with "with" statement.
+
+	__enter__():
+	called before entering the with statment body.
+	return value bound as varaible.
+	can return any type.
+	commonly return context manager itself.
+
+	e.g
+
+	f = open("demo.txt")
+	with f as g:
+		print(f is g)
+
+	True.
+
+	__exit__(self,exc_type,exc_val,exc_tb)
+
+	if __exit__() return False, it propogate the exception.
+
+	__exit__() answers the question ""should the with-statement
+	swallow exception ?"
+
+	__exit__ should never re-raise the exception.
+	__exit__ it should raise the exception when it fail to handl.
+
+	With statement define in PEP343
+###################################################################
+contextlib standard library module for working with context manager.
+Provide the utility for common task involving the with statement.
+
+contextlib.contextmanager decorator you can use to create new context manager.
+
+By creating the generator function we can create context manager.
+
+@contexlib.contexmanager
+def mycontext_manager():
+	try:
+		# Enter
+		yield value
+		# Normal Exit
+	except Exception
+		# Exceptional Exit
+		raise
+
+with my_context_manager() as x:
+
+
+
+
+yield value act as __enter__()
+After that with body is executed.
+if executed normal then Normla exit called.
+else if some exception occure it uses Exception Exit .
+Here we have control to raise the existing exception using raise.
+contextmanager uses the standard exception handling  to propogate the exception.
+
+
+Mutiple Context manager:
+
+with cm1() as a, cm2() as b:
+	BODY
+
+
+with cm1() as a:
+	with cm2() as b:
+		BODY
+
+Exception propogate from inner context manager will be seen by outer context managers
+https://devblogs.microsoft.com/python/
+
+
+weakref  Impermanent References to Objects
+Purpose:	Refer to an expensive object, but allow its memory to be reclaimed by the garbage collector if there are no other non-weak references.
+The weakref module supports weak references to objects.
+A normal reference increments the reference count on the object and prevents it from being garbage collected.
+This outcome is not always desirable, especially when
+a circular reference might be present or when a cache of objects should be deleted when memory is needed.
+A weak reference is a handle to an object that does not keep it from being cleaned up automatically.
+
+References
+Weak references to objects are managed through the ref class. To retrieve the original object, call the reference object.
+r = weakref.ref(obj)
+
+The ref constructor accepts an optional callback function that is invoked when the referenced object is deleted.
+r = weakref.ref(obj)
+r = weakref.ref(obj, callback)
+where call back is function which get automatically called when object is deleted.
+
+Some important blog
+https://rushter.com/blog/python-garbage-collector/
+https://medium.com/practo-engineering/garbage-collection-and-memory-management-in-python-8b9f3ae263e1
+
+
+PEP : Python Enhancement Proposal
+
+A design document providing the inforamtion to the community or describing new feature
+for python or its process or enviornment.
+
+Import Guide Line
+Three group seperated by lines .
+ -Standard Lib
+ -Third-party library
+ -Local/application-library
+
+Naming:
+Module : short, lowercase names
+Classes : CapitalizedName
+Function : lower_case_with_underscore
+Constant : ALL_CAPS
+
+Documentation: Docstring for all public modules,
+fuction, classes and method.
+
+other toosl
+-pylint
+-pycodestyle
+-black
+
+pip install pylint
+
+pylint project
+or
+pylint project/demo.py
+
+pylint --generate-rcfile > pylint
+
+pip install pycodestyle
+pycodestyle project/package/demo.py
+
+
+-black also have the ability to fix that problem.
+
+
+Documenting Python code.
+sphinx : It used for generating HTML from source documentation .
+It also uses the restructredText for layout text .
+PEP 257 : Convention associate with docstring .
+ Docstrig : String as first statement of a module , function , class or method.
+ __doc__
+
+
+
+
+
+ Bussiness Automation :
+ File Handling Automation
+  C:\Folder\File.txt	A file has a file path and a file name
+  C:\	  				Root directory location
+  \						Folder	Directory where File.txtresides
+  \						Backslash \on Windows
+  /						Forward slash /on macOS and Linux
+ /Folder/File.txt		The same file on macOS or Linux
+ import os				Python library for OS functions
+ os.path.join('C:\\Folder', 'File.txt')			Use join to describe file paths
+ os.getcwd()			Gets the current OS working
+
+ .\File.txt				This is a relative file path
+ C:\File.txt			This is an absolute file path
+ .\or./					Current directory
+ ..\or../				Parent directory
+ \.file.txt and file.txtare the same	.\or ./at the start of a relative path are optional
+os.makedirs('C:\\Folder\\SubFolder')	Creates the Folderand SubFolderdirs
+os.path.abspath('.\\Folder')	Returns C:\Folder(Absolute path)
+os.path.relpath('C:\\Folder\\', 'C:\\Af\\Bf')	Returns ..\..\Folder
+
+
+
+Managing Python Package and  Python
+checking python pip version
+
+python -m pip -V
+pip -V
+
+
+Installing Package :
+pip install package_name
+
+Unistalling Pacage :
+pip uninstall pacakge_name
+
+Uninstalling Multiple Package:
+pip uninstall pack1 pack2 ..
+
+Listing the Pacakage:
+pip list
+
+Show the detail of pacakge
+pip show package_name
+
+Installing Multiple Pacage
+pip install pack1 pack2 pack3
+
+Upgrade to latest version
+python -m install -U package_name
+
+
+
+pip built in help command
+pip help <command e.g list,install,uninstall,show ..>
+http://pip-installer.org
+pypi.org
+
+
+Setting the Virtual Environment
+python -m pip install virtualenv
+
+if virtualenv command not get present in linux system.
+then install in that manner.
+
+sudo python -m pip install virtualenv
+
+Creating Virtual Environment
+>>virtualenv demo
+above command create the virtual environment
+
+
+Creating virtualenv with specific version.
+>>virtualenv -p python3 demo_ex_py3
+It create the virtual environment of specific version.
+
+Acitvating virtual enviornment in windos
+env/Scripts/activate.ba
+
+In Linux
+.env/bin/activate
+
+Similar package availaible in python > 3.3
+python -m venv environment_name
+
+# Deprecated
+pyvenv demo
+
+
+
+Syncing dependency with you team mate.
+python -m pip freez
+it will list all the package which is used in currently activated environment
+
+
+pyton -m pip freez > requirements.txt
+python -m pip install -r requirements.txt
+
+
+python -m pip install -e package
+It install package for developer/editor .
+
+it contain tox.ini which is used for testing the code in different version.
+tox : it is commandline automation testing tool
+How to install tox , it's simple
+pip install tox
+
+
+go to you package location which is install as editor mode in current location.
+it location is show using
+python -m pip show package_name.
+
+
+Using virtualenvwrapper which makes the life.
+- Virtualenvwrapper is more friendly wrapper around virtualenv
+- Easy Creation and activation of virtual enviornment
+- Bind project to virtualenvs.
+- Great with large number of projects.
+
+(flask_venv) root@chetan-virtual-machine:/tmp/flask# #sudo python -m pip  install virtualenvwrapper
+(flask_venv) root@chetan-virtual-machine:/tmp/flask# which virtualenvwrapper.sh
+/usr/local/bin/virtualenvwrapper.sh
+(flask_venv) root@chetan-virtual-machine:/tmp/flask#
+
+source /usr/local/bin/virtualenvwrapper.s
+
+Introduction to installation
+
+
+
+
+
+
+
+Why Use pyenv?
+pyenv is a wonderful tool for managing multiple Python versions.
+Even if you already have Python installed on your system,
+it is worth having pyenv installed so that you can easily try out new language
+features or help contribute to a project that is on a different version of Python.
+
+
+
+How to install on ubuntu
+sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
+libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
+libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl
+
+curl https://pyenv.run | bash
+
+
+This will install pyenv along with a few plugins that are useful:
+
+pyenv: The actual pyenv application
+pyenv-virtualenv: Plugin for pyenv and virtual environments
+pyenv-update: Plugin for updating pyenv
+pyenv-doctor: Plugin to verify that pyenv and build dependencies are installed
+pyenv-which-ext: Plugin to automatically lookup system commands
+
+
+
+
+
