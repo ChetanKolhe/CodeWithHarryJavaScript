@@ -4,8 +4,6 @@ import random
 import time
 
 
-
-
 def do_some_work():
     sleep_time = random.randint(1, 9)
     time.sleep(sleep_time)
