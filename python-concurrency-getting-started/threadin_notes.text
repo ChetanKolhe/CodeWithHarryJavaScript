@@ -34,15 +34,11 @@ threading 1.5 , multiprocessing 2.6+
 concurrent.futures 3.2
 asyncio 3.4
 
-
-
 Process :
 The execution context of a running program .
 or running instace of computer program .
 
-
 Thread : The smallest sequence of instruction that can be managed by operating system .
-
 
 How to create a Thread
 
@@ -68,6 +64,7 @@ class threading.Thread(group=None,
 					   )
 
 A boolean value indicating whether this thread is a daemon thread (True) or not (False).
+
 This must be set before start() is called, otherwise RuntimeError is raised.
 Its initial value is inherited from the creating thread;
 the main thread is not a daemon thread and therefore all threads created in the main thread default to daemon = False.
@@ -85,8 +82,6 @@ class myThread(theading.Thread):
 my_feb_task = myThread(1)
 my_feb_task.start()
 my_feb_task.join()
-
-
 
 Thread Lifecycle
 
@@ -119,8 +114,6 @@ Due to that may be data corruption also occur .
 
 
 In multithreading , it is best practice to share minimum resource .
-
-
 
 Thread Synchronization
 
@@ -746,7 +739,9 @@ https://docs.python.org/dev/library/asyncio-subprocess.html#asyncio-subprocess
 coroutine : 
 
 Python’s coroutines, special functions that give up control to the caller without losing their state.
+
 or 
+
 Generalize subrouting with non-preemptive multitasking by allowing execution suspended and resumed .
 
 subroutine : is sequence of program instruction that perform specfict , packaged as unit . Function .
@@ -785,7 +780,10 @@ loop.call_at(monolitic_time , callback,parameter , parameter)
 
 
 
-
+The ensure_future() function returns a Task tied to the execution of a coroutine.
+That Task instance can then be passed to other code,
+which can wait for it without knowing how the original coroutine was constructed or called.
+Note that the coroutine given to ensure_future() is not started until something uses await to allow it to be executed.
 
 
 

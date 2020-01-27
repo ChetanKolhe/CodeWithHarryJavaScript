@@ -387,6 +387,188 @@ def fun(args,args, *args, kwargs kwargs2, **kwargs4)
 The compliment of extended formal argument syntax is extended call syntax or
 extend actual syntax.
 
+Local Function : 
+
+LEGB rule : 
+Local , Enclosing , Global , Built in scope for name look up.
+
+g="global"
+def func(x):
+	def local_func(n):
+		a = "hello"
+		return a + n 
+
+Useful for specilized , one-off functions .
+Aid in code orginization and readablity .
+Similar to lambda , but more gneral .
+ -- may contain multiple expression 
+ -- may contain statement .
+
+
+Returning function 
+def outer_fun():
+	def inner():
+		print("This is inner function ")
+	return inner
+
+First Class Function : Function can be treated like any other object .
+
+Closures : maintain refernces to object from earlier scopes  .
+
+use case of closures : 
+Function Factory : Function that returns new , specialized function .
+
+
+LEGB does not apply when making new binding .
+message = "global"
+def enclosing():
+    message = "enclosing"
+
+    def local():
+        message = "local"
+
+    print("Enclosing", message)
+    local()
+    print("Enclosing", message)
+
+print("Global", message)
+enclosing()
+print("Global", message)
+
+
+what is a solution to solve this ?
+nonlocal : introduces name from enclosing scope into the local namespace .
+global : introduces name from global namespace into the local namesapce .
+
+message = "global"
+def enclosing():
+    message = "enclosing"
+
+    def local():
+		nonlocal message 
+        message = "local"
+
+    print("Enclosing", message)
+    local()
+    print("Enclosing", message)
+
+print("Global", message)
+enclosing()
+print("Global", message)
+
+
+
+message = "global"
+def enclosing():
+    message = "enclosing"
+
+    def local():
+		global message 
+        message = "local"
+
+    print("Enclosing", message)
+    local()
+    print("Enclosing", message)
+
+print("Global", message)
+enclosing()
+print("Global", message)
+
+
+Decorator : 
+Modify or enhance the function without changing their definations .
+It is a callble which take a callable and return the callable.
+
+@my_decorator
+def my_function(x,y):
+	return x + y
+
+It first compile into base function . Fuction Object 
+Python then passes the function obect to my_decorator
+
+def my_decorator(f):
+	......
+	return f
+Return a Function Object .
+python take a rertur value from fucntion object and bind to my_funtion name .
+
+in other word decorator in python 
+Replace , enhance, modify exsiting functions .
+Calling code dosn't need to change .
+Decorator meachanism uses the modified function orignal name .
+
+we have seen function as decorator  but other object can be decorator as well .
+1. class decorator 
+Class MyDec:
+	def __init__(self, f):
+		pass
+	def __call__():
+		pass
+@MyDec
+def my_function():
+	pass.
+
+Applying class decorator create a new instance which get bind original function i.e my_function
+instance get created must be callable and init function must accept function as parameter for initialization .
+
+class CallCount:
+    def __init__(self, f):
+        self.f = f
+        self.count = 0
+
+    def __call__(self, *args, **kwargs):
+        self.count += 1
+        return self.f(*args, **kwargs)
+
+@CallCount
+def my_sum():
+    print("This is sum example ")
+my_sum()
+my_sum()
+my_sum()
+print(my_sum.count)
+
+
+Instance as Decorator :
+class AnotherDec:
+	def __call__(self,f):
+		def wrap():
+			...
+		return wrap
+
+Example :
+class Trace:
+    def __init__(self, enable=False):
+        self.enable = enable
+
+    def __call__(self, f):
+        def wrap(*args, **kwargs):
+            if self.enable:
+                print("Calling {}".format(f))
+            return f(*args, **kwargs)
+
+        return wrap()
+
+
+my_trac = Trace(enable=False)
+
+@my_trac
+def my_function():
+    print("This is my_function")	
+
+
+
+Multiple Decorator 
+@decorator1
+@decorator2
+@decorator3
+def some_function():
+
+
+
+functools.wrap()
+Naive decorator can lose important data .
+
 
 ###############################################
 Static method in Inheritance .
