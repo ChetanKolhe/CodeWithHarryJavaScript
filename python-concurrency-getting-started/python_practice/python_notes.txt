@@ -318,7 +318,7 @@ functional arguments come in two flavour.
 		print(args1,args2,args3)
 
 
-	function_name(12,args2=34)    --> argument which generally passed to called called "Formal Argument"
+	function_name(12,args2=34)    --> argument which generally passed "Actual  Argument"
 	12 : Positional Argument
 	args2: Keyword Argument
 	32 : Default Argument
@@ -374,7 +374,7 @@ lambda function have any number of argument but only one expression.
 lambda function is used with map,filter,map.
 
 ##########################################
-callable() is builtin function which true or false if instagne or object is callable .
+callable() is builtin function which true or false if instance or object is callable .
 
 Extended formal argument syntax
 
@@ -571,6 +571,21 @@ Naive decorator can lose important data .
 
 
 ###############################################
+Assignment to attribute
+self.attr = something 
+always creates an instance attribute never a class attribute .
+
+class method for named construction .
+It same as facotory function where class have method which able to create particual instance by passing 
+different attribute .
+e.g
+@classmethod
+def create_empty_container(cls,owner)
+	return cls(owner,containe=None)
+
+	
+
+
 Static method in Inheritance .
 It we want to override the static methode and want to acces the method from base class
 then use the "self" instead of "class" to call the override method.
@@ -606,6 +621,8 @@ use the following code
             raise ValueError("Temperature too cold!")
         RefrigeratedShippingContainer.celsius.fset(self, value)
 
+
+David Wheeler : All problem in computer science can be solved another level of indirection .
 
 #################################################
 String Representation.
@@ -643,7 +660,7 @@ print("{:xyz}".format(obj))
 !r forces to use repr format
 "{!r}".format(obj)
 
-most cases we generally not depend on __formatl__, it relay on mostly str
+most cases we generally not depend on __format__, it relay on mostly str
 
 if str not implimented it uses the __repr__
 but reverse is not true.
@@ -743,15 +760,16 @@ Decimal(Infinity),Decimal("-Infinity"),Decimal("NaN")
 
 (-7)//3
 >> -3
+
 (-7)%3
 >> 2
 
 Decimal("-7") // Decimal("3")
 >> Decimal('-2')
 
-
+Float is design for legacy python code , where as Decimal is design on IEEE-854 redix standard.
 Decimal module doesn't have support for math module.
-so it has the inbuil functionality to do some math opertion.
+so it has the inbuilt functionality to do some math opertion.
 
 ######################################################
 standard libaray fraction which contain Fraction class for rational number.
@@ -811,7 +829,6 @@ e.ga
 4 + 5j
 	j: is act like i (imaginary part).
 python uses the electrical engineering notation for imaginary part.
-
 
 complex construction:
 string argument may have parentheses but must not contain space .
@@ -1080,8 +1097,7 @@ result
 1225
 
 
-reduce also take the optional value if we not pass any value to it accumalte as initialization
-value
+reduce also take the optional value if we not pass any value to it accumalte as initialization value.
 e.g
 
 result = reduce(add,[],0)
@@ -1100,6 +1116,11 @@ It will use for map-reduce algorithm.
 
 
 ####################################
+Iterable is an object, which one can iterate over.
+It generates an Iterator when passed to iter() method. 
+Iterator is an object, which is used to iterate over an iterable object using __next__() method.
+Iterators have __next__() method, which returns the next item of the object.
+
 Python Iteration.
 iter()
 Create the iterator
@@ -1109,14 +1130,10 @@ Get the next element
 
 StopIteration()
 
-
-
 iterable : It is an object which impliment __iter__() method.
 
 iterator: an object which impiment iterable protocol and which
 		impliment __next__ method.
-
-
 
 iter() it return the iterator object.
 The iter() method takes two parameters:
@@ -1151,11 +1168,30 @@ class ExampleIterable:
 
 
 alerternative iterable protocol works with any object that supports
-consecutive inte indexing via
-__getitem__
+consecutive integer indexing via __getitem__
 
 
+Extended iterator :
+iter(callabe, sentinel)
+callable object that take single arguments 
 
+Argument which need to match with return value then it get stop the iteration .
+Extended iter is often used for creating infinite sequence from existing function .
+
+example :
+import datetime
+my_iter_data = iter(datetime.datetime.now , None)
+next(my_iter_date)
+next(my_iter_date)
+next(my_iter_date)
+it alwas return data and it will continue infinity .
+because it always return date and sentinel never become None.
+
+with open("fileName","rt") as f:
+  for line in iter(lambda:f.readline().strip(), "END")
+	print(line)
+
+for stamp, value in itertools.
 ################################################################################
 Inheritance and Subtype Polymorphism
 
@@ -1197,7 +1233,7 @@ __bases__ : it return the tuple of base class from which it inherited.
 Method Resolutiont Order: Ordering that determine name lookup.
 commonly called MRO.
 Method may be defined in multiple places.
-MRO is ordering of inheritance grap.
+MRO is ordering of inheritance graph.
 
 className.__mro__ it return tuple.
 className.mro() it return the mro of list.

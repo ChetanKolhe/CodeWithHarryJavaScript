@@ -20,7 +20,7 @@ Concurrency Types:
 
 2. Asynchronous Programming . ( Best suitted for I/O bound task )
 	Delegating to task some other thread or actore and continue doing other work .
-	When subtask get completed it note back to main therad , this is generally called
+	When subtask get completed it note back to main thread , this is generally called
 	callback function .
 
 	Database reads , wirtes .
@@ -314,7 +314,7 @@ GIL Workarournds : GIL -less Python Interpretor
 Multiprocessing :
 
 Process don't share memory and resources with other Process .
-But some exception to where process ask operyting system to share resource some singnal or calls .
+But some exception to where process ask operyting system to share resource or some singnal or calls .
 
 Adv :
 Side Steps GIL
@@ -342,7 +342,7 @@ if __name__ == '__main__':
     p1.join()
 
 
-Pickling : Is the process where python ojbect hierchy is converted into bytestream .
+Pickling : Is the process where python object hierchy is converted into bytestream .
 Unpickling : Is reverse operation .
 
 
@@ -366,7 +366,7 @@ terminate()
 p.exitcode : this attribute is used for determineing exit code .
 
 process.terminate()
-shared resources my be put in an inconsistent state .
+shared resources may be put in an inconsistent state .
 Finally clauses and exit handler will not be run.
 
 ProcessPools : An easy way to execute fixed pool of process .
@@ -438,6 +438,34 @@ Pipe(True) : Connection is bidirection .
 
 conn.recv() : it will wait for data .
 
+
+Example : 
+import multiprocessing
+import random
+
+def make_tuple(conn):
+    num = random.randint(1,9) *10
+    conn.send(("Hi",num))
+    print(conn.recv())
+
+def make_string(conn):
+    tup_var = conn.recv()
+    result = ""
+
+    substr, num = tup_var
+    for _ in range(num):
+        result += substr
+    conn.send(result)
+
+if __name__ == "__main__":
+    conn1,conn2 = multiprocessing.Pipe(True)
+    p1 = multiprocessing.Process(target=make_tuple,args=(conn1,))
+    p2 = multiprocessing.Process(target=make_string,args=(conn2,))
+
+    p1.start()
+    p2.start()
+
+
 Pipe generally cause data corruption it to connection try to send data in one time .
 For this Queue is more modern or secure way for inter process connection .
 
@@ -445,6 +473,32 @@ It also impliment all standard call which impliment in normal queue call .
 
 threading.Queue : qsize , put , get , empty , full , task_done , join,
 multiprocessing.Queue : qsize , put ,get ,empty , full
+
+Example :
+import multiprocessing
+import random
+
+def make_tuple(conn):
+    num = random.randint(1,9) * 10
+    conn.put(("Hi",num))
+    print(conn.get())
+
+def make_string(conn):
+    tup_var = conn.get()
+    result = ""
+
+    substr, num = tup_var
+    for _ in range(num):
+        result += substr
+    conn.put(result)
+
+if __name__ == "__main__":
+    queue = multiprocessing.Queue()
+    p1 = multiprocessing.Process(target=make_tuple,args=(queue,))
+    p2 = multiprocessing.Process(target=make_string,args=(queue,))
+
+    p1.start()
+    p2.start()
 
 
 There also other queue which also impliment task_done , join 
@@ -486,7 +540,7 @@ submit , map and shutdown .
 
 submit(fn, *args, **kwargs)  # Schedule a function to run . It return future object .
 map(fn,iterable, timeout , chunksize=1)
-shudown(wait=True) # stop accepting task and shutdown 
+shudown(wait=True) # stop accepting task and shutdown .
 
 ThreadPoolExecutor(max_worker=None, thread_name_prefix="")
 
@@ -603,7 +657,7 @@ There are two constuct in python which called coroutine .
 2. Coroutine Object 
 
 Coroutine Function :
-	It is a special function 
+	It is a special function .
     It give up the control to the caller without loosing its step .
 
 Exaple of Coroutine function are 
