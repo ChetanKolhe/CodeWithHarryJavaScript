@@ -1243,9 +1243,9 @@ className.mro() it return the mro of list.
 How the python calculate the MRO of class  ?
 It uses the C3 algorithm for calculating MRO in Python.
  1. Subclass come before the base class.
- 2. Base class order from class definatin is preserved.
+ 2. Base class order from class defination is preserved.
  First two qualities are preserved no matter where you are started
- in inheriance grap.
+ in inheriance graph.
 
 Valid Path:
 class A:pass
@@ -1276,9 +1276,33 @@ Bound Proxy: Bound to specific class or instance .
 Unbound Proxy: Not bound to class or  instance.
 
 
+class Bound Proxy :
+super(base-class , derived-class)
+
+- Python find MRO for derived-class . 
+- It then find base-class in MRO.
+- it take everything after base-class in the MRO.
+  and find the first class sequence with a matching name .
+ 
+ 
+Instance Bound Proxy:
+super(base-class, instance of base or derived class)
+-Python find MRO the mro for second argument .
+-Find the location of the first argument in the MRO.
+-Uses every thing after that for resolving methods.
 
 
+super called without argument in instance.
 
+super() which is interanally equivalent to super(class-of-method,self)
+in case of class
+super(class-of-method,self)
+
+super uses everything after a specific class in an MRO to resolve method calls .
+
+
+object : the core of the Python object model .
+Object is ultimate base class of every class .
 
 
 ###################################################
@@ -1320,7 +1344,6 @@ def __contains____(self,item)
 
 The sized Protoco:
 __len__ is used to determine the size of item sing len(item) function.
-
 
 sequnce protocol:
 It relies on container, sized, iterable protocol.
@@ -1377,11 +1400,11 @@ Exception Payload:
 	accept a simple string in the constructor call .
 
 	e.args --> return tuple
-	PE352: is quite clear on matter , no restriction is placed upon
+	PE352: is quite clear on matter , no restriction is placed upon .
 	what may be passed in for args for backward-compatibility reason .
-	In practice, though only a single string argument should be used.
+	In practice, though only a single string argument should be used .
 
-	That said specific exception classed may provide additional specific named
+	That said specific exception classed may provide additional specific named.
 	attribute which contain further information in case of debugging.
 
 	e.g
