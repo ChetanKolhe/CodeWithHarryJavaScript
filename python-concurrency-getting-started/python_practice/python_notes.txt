@@ -1415,10 +1415,10 @@ Chaining Exception:
 	Exception chaining allow us to associate one exception with another.
 	In 2 cases exception occur.
 	1. Durring processing of one exception another exception occure.
-	2. when we need to delibratly handl the exception by translating into different
+	2. when we need to delibratly handle the exception by translating into different	   
 	   Exception type.
 
-	Implicit Chaining : When one exception occur while another is being processed.
+	Implicit Chaining : When one exception occur while another is being processed.	
 	the python runtime machinory associates the original exception with the new exception by
 	setting the __context__ to most recent exception.
 
@@ -1474,11 +1474,11 @@ Chaining Exception:
 	If we want to print the trace back then use the std lib traceback
 
 	traceback.print_tb(e.__traceback__)  # It print the traceback.
-
 	traceback.format_tb(e.__traceback__) # It return the string .
 
 	Don't keep refferences to __traceback__ beyond the scope of except block.
 	Prefer to render the __traceback__ in string .
+	
 # Checking invarient with asserations.
 assert : Is help you prevent the bug creeping into your code.
 syntax:
@@ -1493,7 +1493,6 @@ Executing python code with asseration
 python3 script.py
 
 
-
 Context Manager:
 Those object is design the to use with "with" statment
 
@@ -1506,7 +1505,7 @@ with context-manager:
 
 	Context manager ensuere that resource are properaly and automatically managed.
 	enter() : it prepare the manager for use.
-	clean() : clean it up.
+	exit() : clean it up.
 
     to impliment the context manager , it required to impliment following method
 	__enter__(self)
@@ -1569,7 +1568,7 @@ with context-manager:
 	swallow exception ?"
 
 	__exit__ should never re-raise the exception.
-	__exit__ it should raise the exception when it fail to handl.
+	__exit__ it should raise the exception when it fail to handle.
 
 	With statement define in PEP343
 ###################################################################
@@ -1850,5 +1849,183 @@ pyenv-which-ext: Plugin to automatically lookup system commands
 
 
 
+int().to_bytes(length=2,byteorder="little",signed="True")
+int().from_bytes(--""--)
+int().bit_length()
 
 
+
+str : immutable sequence of unicode code points .
+bytes : Immutable sequence of bytes .
+
+
+mutable byete array sequence.
+-- Elements are bytes (0-255)
+-- Sequence
+-- Mutalbe
+-- Similar methods to list and bytes.
+
+bytearray()
+=>bytearray(b'')
+
+bytearray(5)
+=>bytearray(b'\x00\x00\x00\x00\x00')
+
+bytearray(b"This is a sequence of byte")
+=>bytearray(b'This is a sequence of byte')
+
+demo = bytearray(b"This is a sequence of byte")
+=>demo.extend(b" this is extended sequence ")
+
+=>demo
+bytearray(b'This is a sequence of byte this is extended sequence ')
+
+demo.split()
+=>[bytearray(b'This'), bytearray(b'is'), bytearray(b'a'), bytearray(b'sequence'), bytearray(b'of'), bytearray(b'byte'),
+ bytearray(b'this'), bytearray(b'is'), bytearray(b'extended'), bytearray(b'sequence')]
+
+
+
+Object Internals:
+-- Internal object representation .
+-- manipulating __dict__ dictionary 
+-- Faking attribute 
+   __getattr__
+   __setattribute__
+   __setattr__
+   __delattr__
+   
+save space __slots__ 
+
+
+__dict__ : It is a python dictionary which is used to store python object attribute .
+
+working with __dict__ , it is good to used following method , direct use of __dict__ is legitimate .
+
+getatter(obj, item)
+setatter(obj,
+
+
+(Fallback)__getatter__(self,item): Invoked after requested attribute/property not found by normal look up.
+(Preemtive)__getatteribute__(self,item): Invoked instead of normal lookup.
+
+
+__delattr__ : it is rarley uses the delattr . 
+
+
+
+Descriptor : 
+Python descriptors were introduced in Python 2.2,
+Python descriptors are a way to create managed attributes.
+
+Python descriptor protocol is simply a way to specify what happens when an attribute is referenced on a model.
+
+In general, a descriptor is an object attribute with a binding behavior,
+one whose attribute access is overridden by methods in the descriptor protocol.
+Those methods are __get__, __set__, and __delete__.
+If any of these methods are defined for an object, it is said to be a descriptor.
+Take a closer look at these methods in Listing 1.
+
+get(self, instance, owner)
+set(self, instance, value)
+delete(self, instance)
+ 
+It is important to note that descriptors are assigned to a class, not an instance.
+Modifying the class overwrites or deletes the descriptor itself, rather than triggering its code.
+https://developer.ibm.com/technologies/python/tutorials/os-pythondescriptors/
+
+
+Listing 2. Creating descriptors using class methods
+           
+class Descriptor(object):
+
+    def init(self):
+        self.name = ''
+
+    def get(self, instance, owner):
+        print "Getting: %s" % self.name
+        return self.name
+
+    def _set(self, instance, name):
+        print "Setting: %s" % name
+        self._name = name.title()
+
+    def __delete(self, instance):
+        print "Deleting: %s" %self._name
+        del self._name
+
+class Person(object):
+    name = Descriptor()
+	
+
+	
+Listing 3. Creating descriptor with property type
+class Person(object):
+    def init(self):
+        self._name = ''
+
+    def fget(self):
+        print "Getting: %s" % self._name
+        return self._name
+    
+    def fset(self, value):
+        print "Setting: %s" % value
+        self._name = value.title()
+
+    def fdel(self):
+        print "Deleting: %s" %self._name
+        del self._name
+    name = property(fget, fset, fdel, "I'm the property.")
+
+	
+
+Listing 4. Creating descriptors with property decorators
+class Person(object):
+
+    def init(self):
+        self._name = ''
+
+    @property
+    def name(self):
+        print "Getting: %s" % self._name
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        print "Setting: %s" % value
+        self._name = value.title()
+
+    @name.deleter
+    def name(self):
+        print ">Deleting: %s" % self._name
+        del self._name
+
+
+Listing 5. Creating descriptors at run time
+class Person(object):
+
+    def addProperty(self, attribute):
+        #create local setter and getter with a particular attribute name 
+        getter = lambda self: self.getProperty(attribute)
+        setter = lambda self, value: self.setProperty(attribute, value)
+
+        #construct property attribute and add it to the class
+        setattr(self._class, attribute, property(fget=getter, 
+                                                    fset=setter, 
+                                                    doc="Auto‑generated method"))
+
+    def _setProperty(self, attribute, value):
+        print "Setting: %s = %s" %(attribute, value)
+        setattr(self, '' + attribute, value.title())    
+
+    def getProperty(self, attribute):
+        print "Getting: %s" %attribute
+        return getattr(self, '' + attribute)
+
+		
+Conclusion
+Python descriptors allow for powerful and flexible attribute management with new style classes. 
+Combined with decorators, they make for elegant programming, allowing creation of Setters and Getters,
+ as well as read-only attributes. It also allows you to run attribute validation on request by value or type. 
+You can apply descriptors in many areas, but use them with discretion to avoid unnecessary code complexity stemming 
+from overriding the normal behaviors of an object.
