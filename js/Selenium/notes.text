@@ -1,0 +1,436 @@
+Seleneum Path List:
+Finding element by using css selector.
+
+Tag and ID
+ syntax : tag#id
+ e.g
+	  input#Email , It will locate the element which have tag input and id="Email"
+	  
+	  
+Tag and Class
+	syntax : tag.class
+	e.g
+	  input.email , It will locate the element which have tag input and class="email"
+	 
+Tag and Attribute
+	syntax = tag[attribute=value]
+	e.g
+		input[name=Email]
+	
+Tag, Class, and Attribute
+	syntax = tag.class[attribute=value]
+	e.g 
+	 css=input.inputtext[name=email]   , It will locate element which have tag input and class="input",name="email"
+
+Sub-String Matches
+Starts With (^)
+	syntax=tag[attribute^=prefix of the string]
+	e.g
+	input[id^='Em']  , It will locate the element which have tag input and id start-with "Em"
+
+Ends With ($)
+	syntax=tag[attribute$=prefix of the string]
+	e.g
+	input[id$='Em']  , It will locate the element which have tag input and id end-with "Em"
+
+Contains (*)
+	syntax=tag[attribute*=prefix of the string]
+	e.g
+	input[id*='Em']  , It will locate the element which have tag input and id which contain "Em"
+	
+	
+Child Elements
+	syntax =parent_locator > child_Locator
+	e.g
+	div#buttonDiv>button , It will locate first div tag whose id=buttonDiv then it look for tag button
+	https://learn.letskodeit.com/p/practice
+	select#multiple-select-example > option 
+
+Element follow by Element
+    syntax = element_locator ~ element_locator
+
+Selects all <div> elements and all <p> elements	
+div,p
+
+	
+Locating elements inside other elements (child or sub-child):
+	Syntax: parentLocator>locator1 locator2	
+	div#buttonDiv button . It will locate the button element there child or sub-child of button div.
+
+	
+Direct Child
+
+Sub-child
+nth-child :select the child element if their position in the document matches an algebric expression.
+	e.g li:selctor(expression)
+	expression may contain : even,odd,whole number,formula an + b.
+	
+	nth-child(expression)
+	last-child(expression)	
+	nth-of-type(expression)
+	nth-last-of-type(expression)
+	
+	:nth-child(even)
+	:nth-child(-n+4) it will select first four child
+	:nth-child(n+5) it will select the 
+	:nth-child(2n + 1 ) Find every 2nd element , move down by 1.
+	:nth-child(3n + 5 ) Find every third element , move up 5.
+	an+b expresstion.
+		
+	last-child(expression) : It will serach the element from last.
+	:nth-child only matches based on index of child element and doesn't take the type of element into account
+	
+	first-child
+	last-child
+	first-of-type
+	last-of-type 
+	nth-child(exprestion)
+	last-child(expression)
+	nth-of-type(expression)
+	nth-last-of-type(expression)
+	
+	
+	
+Attribute NOT contain a specific value
+In WebDriver, how do you find elements whose attribute contain values which you don’t want to select? This CSS selector example shows how NOT to select by specific attribute value
+
+Suppose you have many elements which share the same attribute and attribute value, but some of those elements have other variables appended to the value. e.g:
+
+
+e.g
+<div class="day past calendar-day-2017-02-13 calendar-dow-1 unavailable">
+<div class="day today calendar-day-2017-02-14 calendar-dow-2 unavailable">
+<div class="day calendar-day-2017-02-15 calendar-dow-3">
+<div class="day calendar-day-2017-02-16 calendar-dow-4">
+
+css = "div[class*=calendar-day-]:not([class*='unavailable'])"
+	
+	
+Joining css slector using or , and
+
+
+
+compairing xpath or css selector
+DIRECT CHILD
+XPath: //div/a
+CSS: div > a
+
+CHILD OR SUBCHILD
+XPath: //div//a
+CSS: div a
+
+ID
+XPath: //div[@id='example']
+CSS: #example
+
+CLASS
+XPath: //div[@class='example']
+CSS: .example
+
+
+NEXT SIBLING
+XPATH: //input[@id='username']/following-sibling::input[1]
+CSS: #username + input
+
+
+XPATH: //input[@name='login'and @type='submit']
+CSS: input[name='login'][type='submit'] 
+
+
+All css selector detail explaination :
+https://www.w3schools.com/cssref/css_selectors.asp
+
+
+
+
+Selecting Webdriver element:
+There are various stratigies to locate the element
+
+find_element_by_id()
+find_element_by_name()
+find_element_by_xpath()
+find_element_by_link_text()
+find_element_by_partial_link_text()
+find_element_by_tag_name()
+find_element_by_class_name()
+find_element_by_css_selector()
+
+Apart from method given above there is one more method which is might be useful
+driver.find_element(By.XPATH, "xpath expression")
+
+
+find_element_by_class_name() should contain only one class name. It should not 
+contain multiple class name seperated by space.
+
+
+from selenium.webdriver.common.by import By
+
+
+Finding multiple elemens. only change at end of find_element , "s" is placed.
+
+
+Finding element By CSS selector.
+Every element does not have an id -> static id, unique name, 
+unique link text. For those elements we need to build xpath to 
+find and then perform actions on them.
+Whatever we use to find an element, id, name, xpath, css -> It 
+should always be unique.
+It should only find one matching node unless we want to capture 
+a list of elements.
+
+Syntax:
+tag[attribute='value']
+“#” -> Id
+“.” -> Class
+
+Element Displayed Example Text Box:
+input[id=displayed-text]
+#displayed-text
+input#displayed-text
+input[class=displayed-class]
+.displayed-class
+input.displayed-class
+
+Appending Classes
+.class1.class2.class3 -> Until we find a unique element
+
+
+
+NOTE:while finding element using class
+input[class="democlass1 democlass2"]
+here class : it consider as normal attribute so it's value must match with class.
+
+same thing can be achieve using extended class.
+.democlass1.democlass2.democlass3 it search the value one by one.
+
+
+
+
+Browser Interaction Command.
+Command Description Method/Property
+maximize_window() 
+driver.get(url) 
+driver.title
+driver.current_url
+driver.refresh() 
+driver.get(driver.current_url) 
+driver.back()
+driver.forward()
+driver.page_source
+driver.close() 
+driver.quit() 
+
+webelement.is_enabled() # True for enabled and False for disabled.
+
+Which  method  can  be  used  to  find  if  a  radio  button  or  checkbox  is  
+selected?
+element  =  driver.find_element()
+element.is_selected()
+
+Which  method  can  be used to find if the element is displayed or 
+hidden?
+element = driver.find_element()
+element.is_displayed()
+
+Which class from selenium webdriver can be used to work with 
+dropdown elements?
+Select Class
+
+What are the different ways of finding options from a dropdown 
+element?
+select_by_value()
+select_by_index()
+select_by_visible_text()
+
+
+
+from selenium.webdriver.support.select import Select
+
+ele = driver.find_element_by_id("select_id")
+sel = Select(ele)
+sel.select_by_value("benz")
+
+
+
+How	to find the text on an element?
+Find the element using
+element = driver.find_element()
+output = element.text
+
+How to find the value of an attribute of an element?
+Find the element using
+element = driver.find_element()
+output = element.get_attribute("attribute name")
+
+What is one more way to find the text on an element?
+Find the element using
+element = driver.find_element()
+output = element.get_attribute("innerText")
+
+Implicit Wait:
+If elements are not immediately available, an implicit wait tells Web Driver 
+to poll the DOM for a certain amount of time. The default setting is 0. Once 
+set, the implicit wait is set for the duration of the Web Driver object. This 
+means that we can tell Selenium WebDriver that we would like it to wait for 
+a certain amount of time before throwing an exception that it cannot find 
+the element on the page.
+Explicit Wait:
+It is the custom one. It will be used if we want the execution to wait for 
+some time until some condition achieved.
+An explicit waits is what we can define to wait for a certain condition to 
+occur before proceeding further in the code.
+These are the available expected conditions:
+• alert_is_present
+• element_located_selection_state_to_be
+• element_located_to_be_selected
+• element_selection_state_to_be
+• element_to_be_clickable
+• element_to_be_selected
+• frame_to_be_available_and_switch_to_it
+• invisibility_of_element_located
+• presence_of_all_elements_located
+• presence_of_element_located
+• staleness_of
+• text_to_be_present_in_element
+• text_to_be_present_in_element_value
+• title_contains
+• title_is
+• visibility_of
+• visibility_of_element_located
+
+Code: 
+wait = WebDriverWait(self.driver, timeout, poll_frequency=pollFrequency,
+                    ignored_exceptions=[NoSuchElementException,ElementNotVisibleException,
+					ElementNotSelectableException])					
+element	= wait.until(EC.element_to_be_clickable((byType, locator)))
+
+What are the different types of waits available in Selenium 
+WebDriver With Python Programming Language?
+There are 2 types of wait
+• Implicit Wait
+• Explicit Wait
+What is the difference between implicit wait and explicit wait?
+Implicit Wait:
+If elements are not immediately available, an implicit wait tells 
+Web Driver to poll the DOM for a certain amount of time. The 
+default setting is 0. Once set, the implicit wait is set for the 
+duration of the Web Driver object. This means that we can tell 
+Selenium WebDriver that we would like it to wait for a certain 
+amount of time before throwing an exception that it cannot find 
+the element on the page.
+
+Explicit Wait:
+It is the custom one. It will be used if we want the execution to 
+wait for some time until some condition achieved.
+There can be instance when a particular element takes more than 
+a minute to load. In that case you definitely not like to set a huge 
+time to Implicit wait, as if you do this your browser will going to 
+wait for the same time for every element.
+To avoid that situation you can simply put a separate time on the 
+required element only. By following this your browser implicit 
+wait time would be short for every element and it would be large 
+for specific element.
+
+What are some of the expected conditions?
+These are the available expected conditions:
+• element_to_be_clickable
+• presence_of_element_located
+• title_contains
+
+
+How to find the element using java script ?
+We can execute the javascript code.
+driver.execute_script()
+
+example:
+# driver.get("https://letskodeit.teachable.com/pages/practice")
+driver.execute_script("window.location = 'https://letskodeit.teachable.com/pages/practice';")
+
+# element = driver.find_element(By.ID, "name")
+element = driver.execute_script("return document.getElementById('name');")
+element.send_keys("Test")
+
+Scrolling the element to get place into view
+
+# Scroll Down
+driver.execute_script("window.scrollBy(0, 1000);")
+
+
+# Scroll Up
+driver.execute_script("window.scrollBy(0, -1000);")
+
+
+# Scroll Element Into View
+element = driver.find_element(By.ID, "mousehover")
+driver.execute_script("arguments[0].scrollIntoView(true);", element)
+time.sleep(2)
+driver.execute_script("window.scrollBy(0, -150);")
+
+# Native Way To Scroll Element Into View
+time.sleep(2)
+driver.execute_script("window.scrollBy(0, -1000);")
+location = element.location_once_scrolled_into_view
+print("Location: " + str(location))
+driver.execute_script("window.scrollBy(0, -150);")
+
+
+# Switch to window.
+In selenium each window have given the one handle to it to do the operation on it.
+We can accesss the current window using following syntax.
+
+parentHandle = driver.current_window_handle
+
+# Getting all currently open windo handle
+handles = driver.window_handles
+It is a list wich contain handle
+
+driver.switch_to_window(handle)
+# above command is used to switch between the window.
+
+
+
+
+
+# iframe we also required to swtich to specfic iframe.
+
+what is iframe: In simple term it is a inline frame. means anothor document object in 
+main document.
+
+# Switch to frame using Id
+driver.switch_to.frame("courses-iframe")
+
+# Switch to frame using name
+# driver.switch_to.frame("iframe-name")
+
+# Switch to frame using numbers
+# driver.switch_to.frame(0)
+
+#It will move back to parent iframe.
+self.driver.switch_to.parent_frame()
+
+
+
+# Handling javscript pop.
+In javascript , there are two types of pop-up.
+1. Alert Pop-up
+2. Confirm pop-up
+
+1. Alert pop-up
+        driver.find_element(By.ID, "name").send_keys("Anil")
+        driver.find_element(By.ID, "alertbtn").click()
+        alert1 = driver.switch_to.alert
+        alert1.accept()
+	It only have ok button, we can use the accept.	
+		
+	
+		
+2. Confirm pop-up
+        driver.find_element(By.ID, "name").send_keys("Anil")
+        driver.find_element(By.ID, "confirmbtn").click()
+        alert2 = driver.switch_to.alert
+        alert2.dismiss()
+	
+	it has both  accept(),dissmiss() to accept to cancel the confirm pop-up
+Note : It should only used with alert which don't have id , where we can't click the right,
+it don't have any id . It generated by javascript. there are window pop-up also present.
+which is handle differently.
