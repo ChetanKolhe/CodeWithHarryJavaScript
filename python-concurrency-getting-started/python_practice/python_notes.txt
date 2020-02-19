@@ -1,7 +1,4 @@
 
-
-
-
 Python Notes
 list=[]
 list.append(15)
@@ -2029,3 +2026,143 @@ Combined with decorators, they make for elegant programming, allowing creation o
  as well as read-only attributes. It also allows you to run attribute validation on request by value or type. 
 You can apply descriptors in many areas, but use them with discretion to avoid unnecessary code complexity stemming 
 from overriding the normal behaviors of an object.
+
+
+
+
+
+How Python creat a object :
+# Short Hand Notation
+class Widget:
+	pass
+
+# Complete notation 
+class Widget(object , metaclass=type)
+	pass
+
+Default Base Class : object 
+Default MetaClass : type
+
+When we write class, it is syntatic sugar for creating a dictionary .
+Generally metaclass creates a namespace dictionary .
+
+Python runtime populate the name space dictionary while reading name space dictionary .
+Which is then pass to the metaclass to create a class object .
+
+What happne when we define a class Widget
+class Widget:
+	pass
+	
+name = Widget
+base = ()
+kwargs = {}
+metclass = type
+
+namespace = metaclass.__prepare__(name,bases,**kwargs)
+Widget = metclass.__new__(name,bases,namespace,**kwargs)
+metaclass.__init__(Widget,name, bases,namespace,**kwargs)
+
+
+Note when we define __new__ and __prepare__
+
+__new__ : implicity a class method . means no need to define @classmethod
+where as
+__prepare__ : explicitly need to define classmethod .
+
+Example for tracing metad data.
+
+# class Widget:
+#     pass
+
+# name = Widget
+# base = ()
+# kwargs = {}
+# metclass = type
+# namespace = metaclass.__prepare__(name, bases, **kwargs)
+# Widget = metclass.__net__(name, bases, namespace, **kwargs)
+# metaclass.__init__(Widget, name, bases, namespace, **kwargs)
+
+
+class TracingMeta(type):
+    @classmethod
+    def __prepare__(mcs, name, bases, **kwargs):
+        print("metaclass.__prepare__(metcls,name,bases)")
+        print("metacls :{}".format(mcs))
+        print("name: {}".format(name))
+        print("bases: {}".format(bases))
+        print("kwargs : {}".format(kwargs))
+        namespace = super.__prepare__(name, bases)
+        print("namespace : {}".format(namespace))
+        print()
+        return namespace
+
+    def __new__(mcs, name, bases, namespace, **kwargs):
+        print("metaclass.__new__(mcs,name,bases,namespace)")
+        print("metacls :{}".format(mcs))
+        print("name: {}".format(name))
+        print("bases: {}".format(bases))
+        print("namespace : {}".format(namespace))
+        print("kwargs : {}".format(kwargs))
+        cls = super().__new__(mcs, name, bases, namespace)
+        print("class : {}".format(cls))
+        print()
+        return cls
+
+    def __init__(cls, name, bases, namespace, **kwargs):
+        print("metaclass.__init__(mcs,name,bases,namespace)")
+        print("class :{}".format(cls))
+        print("name: {}".format(name))
+        print("bases: {}".format(bases))
+        print("namespace: {}".format(namespace))
+        print("kwargs : {}".format(kwargs))
+        super().__init__(name, bases, namespace)
+        print()
+
+    def metamethod(cls):
+        print("This is metamethod")
+
+if __name__ == '__main__':
+    class Widget(metaclass=TracingMeta):
+        pass
+
+    print("This is keyword argument example")
+    # Passing keyword argument
+    class Widget2(metaclass=TracingMeta,some="this is keyowrd"):
+        pass
+
+	some="this is keyowrd" this runtime parameter for construction.
+
+
+if you are passing keyword argument to class while its construction. then
+signature of __new__ and __init__ must accept keyword argument. It should have same signature()
+   def __init__(mcs, name, bases, namespace, **kwargs)
+   def __new__(cls, name, bases, namespace, **kwargs)
+
+
+Metaclass Method and Visibility : 
+
+# metamethod :
+these are the method which is called by instance of metaclass. i.e Widget in above exampel   
+metamethod are rarely used. but one method __call__ have significant use case. 
+
+
+meta_instance_method take cls as first argument which is analogious to self.
+meta_class_method take mcs as first argument which is analogious to class .
+
+
+Metaclass __call__ : The instance constructor .
+
+
+type : 
+
+def __call__(cls,*args,**kwargs):
+	obj = cls.__new__(*args,**kwargs)
+	obj.__init__(*args,**kwargs)
+
+metaclass __call__ invokes regular class method __init__ and __new__ .
+
+
+
+
+
+
