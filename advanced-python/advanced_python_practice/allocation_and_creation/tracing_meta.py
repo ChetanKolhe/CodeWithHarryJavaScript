@@ -8,6 +8,7 @@
 # namespace = metaclass.__prepare__(name, bases, **kwargs)
 # Widget = metclass.__net__(name, bases, namespace, **kwargs)
 # metaclass.__init__(Widget, name, bases, namespace, **kwargs)
+from typing import List
 
 
 class TracingMeta(type):
@@ -65,8 +66,9 @@ if __name__ == '__main__':
 
 
     print("This is keyword argument example")
-    # Passing keyword argument
 
+
+    # Passing keyword argument
 
     class Widget2(metaclass=TracingMeta, some="this is keyowrd"):
         pass
