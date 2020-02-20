@@ -2161,6 +2161,159 @@ def __call__(cls,*args,**kwargs):
 
 metaclass __call__ invokes regular class method __init__ and __new__ .
 
+__call__ is very low in python . 
+It is very rare to see this method get overrided .
+
+For example : 
+if you want to accepted argument is keyword argument then on that case we can easily creat this scenario 
+by overrideing this __call__ method .
+
+
+# How to create one shote dict
+class OneShotDict(dict):
+    def __init__(self, existing=None) -> None:
+        super().__init__()
+        if existing is not None:
+            for k, v in existing.items():
+                self[k] = v
+
+    def __setitem__(self, k, v) -> None:
+        if k in self:
+            raise ValueError("Cannot assign exsiting key {!r}".format(k))
+        super().__setitem__(k, v)
+
+
+if __name__ == '__main__':
+    one_obj = OneShotDict()
+    one_obj["1"] = "demo"
+    one_obj["1"] = "demo"
+    print(one_obj)
+
+
+
+
+# Use case of __prepare__ 
+class ProhibitDuplicateMethod(type):
+
+    @classmethod
+    def __prepare__(metacls, __name: str, __bases: Tuple[type, ...], **kwds: Any) -> Mapping[str, Any]:
+        return OneShotDict()
+        # return super().__prepare__(__name, __bases, **kwds)
+
+
+class Dodgy(metaclass=ProhibitDuplicateMethod):
+    def my_method(self):
+        pass
+
+    def my_method(self):
+        pass
+
+
+
+
+Metaclasses and inheritance .
+Like other classes metaclass also a normal class .
+So it can support inheritance like normal class .
+
+Example :
+class MetaclassA(type):
+    pass
+
+
+class MetaclassB(type):
+    pass
+
+
+class A(metaclass=MetaclassA):
+    pass
+
+
+class B(metaclass=MetaclassB):
+    pass
+
+
+
+For example if we try to inherit A and B , but it give the error
+
+class C(A,B):
+    pass
+
+Error:    class C(A,B):
+TypeError: metaclass conflict: the metaclass of a derived class must be a (non-strict) subclass of the metaclasses of all its bases
+
+
+Reason : For creating the class C , there is two option metclass  present from which class C object get created.
+Solution : Create one more metaclass which inherit A adn B and add MetaClassC explictly so it not get confuse.
+
+
+
+class MetclassC(MetaclassA,MetaclassB):
+	pass
+
+class C(A,B,metaclass=MetclassC):
+	pass
+
+
+
+
+
+summary : 
+__prepare__ : must return mapping to hold the namspace content.
+__new__ : must return a class object .
+__init__ : can configure a class object .
+__call__ : on metaclass is the instance constructor.
+
+
+
+UseCase of Metaclass : 
+Metaclass can be used to impliment namedspace descriptor . 
+Strict rules  control the interaction of metaclass with inheritance .
+User supper() wisely for cooperative metaclasses .
+
+
+####Metaclass Decorator #####
+
+Metaclass : lot of moving part : 
+what is alternative ?
+Ans : Class Decorator : a simple alternative .
+
+it is worth remainding : anything which is achieve using class Decorator can also achieve using Metaclass .
+but vice versa is not .
+
+class Decorator < meta classes 
+Prefer class decorator 
+Conceptually similar to function decorator .
+
+
+It apply class decorator after class body is process  but before the process defination bound to name of the class .
+
+# 	Example of class Decorator .
+def my_class_decorator(cls):
+    for k in vars(cls).items():
+        print(k)
+
+    return cls
+
+
+@my_class_decorator
+class Temperature:
+    def get_kelvin(self):
+        pass
+
+    def set_kelvin(self):
+
+
+# Configurable decorator with decorator factories.
+@decorated_factories(argument)
+class Decorated:
+	pass
+
+
+
+
+
+
+
 
 
 
