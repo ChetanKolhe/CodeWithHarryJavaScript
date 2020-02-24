@@ -1816,10 +1816,6 @@ Introduction to installation
 
 
 
-
-
-
-
 Why Use pyenv?
 pyenv is a wonderful tool for managing multiple Python versions.
 Even if you already have Python installed on your system,
@@ -2026,9 +2022,6 @@ Combined with decorators, they make for elegant programming, allowing creation o
  as well as read-only attributes. It also allows you to run attribute validation on request by value or type. 
 You can apply descriptors in many areas, but use them with discretion to avoid unnecessary code complexity stemming 
 from overriding the normal behaviors of an object.
-
-
-
 
 
 How Python creat a object :
@@ -2287,7 +2280,7 @@ Conceptually similar to function decorator .
 
 It apply class decorator after class body is process  but before the process defination bound to name of the class .
 
-# 	Example of class Decorator .
+# Example of class Decorator .
 def my_class_decorator(cls):
     for k in vars(cls).items():
         print(k)
@@ -2310,11 +2303,119 @@ class Decorated:
 
 
 
+Generic Function : 
+A function composed of multiple functions implementing the same operation for different types.
+Which implementation should be used during a call is determined by the dispatch algorithm. 
+
+@functools.singledispatch
 
 
 
+>>> from functools import singledispatch
+>>> @singledispatch
+... def fun(arg, verbose=False):
+...     if verbose:
+...         print("Let me just say,", end=" ")
+...     print(arg)
+
+To add overloaded implementations to the function, use the register() attribute of the generic function.
+It is a decorator. For functions annotated with types, the decorator will infer the type of the first 
+argument automatically
+
+>>> @fun.register
+... def _(arg: int, verbose=False):
+...     if verbose:
+...         print("Strength in numbers, eh?", end=" ")
+...     print(arg)
+...
+>>> @fun.register
+... def _(arg: list, verbose=False):
+...     if verbose:
+...         print("Enumerate this:")
+...     for i, elem in enumerate(arg):
+...         print(i, elem)
+
+>>> @fun.register(complex)
+... def _(arg, verbose=False):
+...     if verbose:
+...         print("Better than complicated.", end=" ")
+...     print(arg.real, arg.imag)
+...
+
+https://docs.python.org/3/library/functools.html
 
 
+
+Abstract Base Class (ABCs) :
+PEP 3119 : 
+collection.abc.Sequence 
+
+module : abc
+
+Python is not Java , C++ , C#
+
+More flexible in Python .
+
+Abstrct : Cannot be meaningfully instentiated .
+Base : The target of an inheritance relationship from a subclass .
+
+Example 
+
+<<abstract>>
+GraphicalDevice 
+     |
+	 |
+<<inheritates>>
+EpsonWF234Driver  --> Concreate Class .
+Interface Defination : The base class defines the interface for client of any and all subclass .
+
+Liskov Substituatablity : Code relying on base class doesn't need to modified for alternative subclass .
+
+What About Duck Typing : "When I see a bird that walk like duck .
+                         and swim like duck and quack like a duck , 
+						 I call that bird a duck . (James Whitcomb Riley 
+						                             American poet and author)
+
+
+A conforming MutableSequence must impliment all 16  method .
+
+Motivation for Abstract Class : 
+Specification : ABSs are effective for specifying interface protocols .
+Detection : ABCs can be used to detect confirming objects . 
+
+Example : 
+>>> from collections.abc import MutableSequence
+>>> issubclass(list,MutableSequence)
+True
+>>> list.__mro__
+(<class 'list'>, <class 'object'>)
+
+
+In MRO we don't see the MutableSequnce . 
+
+Lets try to instantiate MutableSequence
+
+>>> ms = MutableSequence()
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: Can't instantiate abstract class MutableSequence with abstract methods __delitem__, __getitem__,
+ __len__, __setitem__, insert
+
+
+You have said 16 method , But is showing only 5 method need to impliment : 
+Reson : Other method can be implimented using these 5 method .
+But base class provide rudimentary implimentation of many in term of just 5 .
+
+
+
+MutableSequence (virtually subclass of )     ----> type --> abc.ABCMeta.__subclasscheck__(sub) 
+             No complimentory subclass relationshitp 
+
+
+How internally it work . 
+issubclass(list , MutalbeSequence)
+if hasattr(type(MutalbeSequence), '__subclasscheck__')
+	return type(MutableSequence).__subclasscheck__(list))
 
 
 
