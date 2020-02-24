@@ -1,7 +1,4 @@
 
-
-
-
 Python Notes
 list=[]
 list.append(15)
@@ -2029,3 +2026,296 @@ Combined with decorators, they make for elegant programming, allowing creation o
  as well as read-only attributes. It also allows you to run attribute validation on request by value or type. 
 You can apply descriptors in many areas, but use them with discretion to avoid unnecessary code complexity stemming 
 from overriding the normal behaviors of an object.
+
+
+
+
+
+How Python creat a object :
+# Short Hand Notation
+class Widget:
+	pass
+
+# Complete notation 
+class Widget(object , metaclass=type)
+	pass
+
+Default Base Class : object 
+Default MetaClass : type
+
+When we write class, it is syntatic sugar for creating a dictionary .
+Generally metaclass creates a namespace dictionary .
+
+Python runtime populate the name space dictionary while reading name space dictionary .
+Which is then pass to the metaclass to create a class object .
+
+What happne when we define a class Widget
+class Widget:
+	pass
+	
+name = Widget
+base = ()
+kwargs = {}
+metclass = type
+
+namespace = metaclass.__prepare__(name,bases,**kwargs)
+Widget = metclass.__new__(name,bases,namespace,**kwargs)
+metaclass.__init__(Widget,name, bases,namespace,**kwargs)
+
+
+Note when we define __new__ and __prepare__
+
+__new__ : implicity a class method . means no need to define @classmethod
+where as
+__prepare__ : explicitly need to define classmethod .
+
+Example for tracing metad data.
+
+# class Widget:
+#     pass
+
+# name = Widget
+# base = ()
+# kwargs = {}
+# metclass = type
+# namespace = metaclass.__prepare__(name, bases, **kwargs)
+# Widget = metclass.__net__(name, bases, namespace, **kwargs)
+# metaclass.__init__(Widget, name, bases, namespace, **kwargs)
+
+
+class TracingMeta(type):
+    @classmethod
+    def __prepare__(mcs, name, bases, **kwargs):
+        print("metaclass.__prepare__(metcls,name,bases)")
+        print("metacls :{}".format(mcs))
+        print("name: {}".format(name))
+        print("bases: {}".format(bases))
+        print("kwargs : {}".format(kwargs))
+        namespace = super.__prepare__(name, bases)
+        print("namespace : {}".format(namespace))
+        print()
+        return namespace
+
+    def __new__(mcs, name, bases, namespace, **kwargs):
+        print("metaclass.__new__(mcs,name,bases,namespace)")
+        print("metacls :{}".format(mcs))
+        print("name: {}".format(name))
+        print("bases: {}".format(bases))
+        print("namespace : {}".format(namespace))
+        print("kwargs : {}".format(kwargs))
+        cls = super().__new__(mcs, name, bases, namespace)
+        print("class : {}".format(cls))
+        print()
+        return cls
+
+    def __init__(cls, name, bases, namespace, **kwargs):
+        print("metaclass.__init__(mcs,name,bases,namespace)")
+        print("class :{}".format(cls))
+        print("name: {}".format(name))
+        print("bases: {}".format(bases))
+        print("namespace: {}".format(namespace))
+        print("kwargs : {}".format(kwargs))
+        super().__init__(name, bases, namespace)
+        print()
+
+    def metamethod(cls):
+        print("This is metamethod")
+
+if __name__ == '__main__':
+    class Widget(metaclass=TracingMeta):
+        pass
+
+    print("This is keyword argument example")
+    # Passing keyword argument
+    class Widget2(metaclass=TracingMeta,some="this is keyowrd"):
+        pass
+
+	some="this is keyowrd" this runtime parameter for construction.
+
+
+if you are passing keyword argument to class while its construction. then
+signature of __new__ and __init__ must accept keyword argument. It should have same signature()
+   def __init__(mcs, name, bases, namespace, **kwargs)
+   def __new__(cls, name, bases, namespace, **kwargs)
+
+
+Metaclass Method and Visibility : 
+
+# metamethod :
+these are the method which is called by instance of metaclass. i.e Widget in above exampel   
+metamethod are rarely used. but one method __call__ have significant use case. 
+
+
+meta_instance_method take cls as first argument which is analogious to self.
+meta_class_method take mcs as first argument which is analogious to class .
+
+
+Metaclass __call__ : The instance constructor .
+
+
+type : 
+
+def __call__(cls,*args,**kwargs):
+	obj = cls.__new__(*args,**kwargs)
+	obj.__init__(*args,**kwargs)
+
+metaclass __call__ invokes regular class method __init__ and __new__ .
+
+__call__ is very low in python . 
+It is very rare to see this method get overrided .
+
+For example : 
+if you want to accepted argument is keyword argument then on that case we can easily creat this scenario 
+by overrideing this __call__ method .
+
+
+# How to create one shote dict
+class OneShotDict(dict):
+    def __init__(self, existing=None) -> None:
+        super().__init__()
+        if existing is not None:
+            for k, v in existing.items():
+                self[k] = v
+
+    def __setitem__(self, k, v) -> None:
+        if k in self:
+            raise ValueError("Cannot assign exsiting key {!r}".format(k))
+        super().__setitem__(k, v)
+
+
+if __name__ == '__main__':
+    one_obj = OneShotDict()
+    one_obj["1"] = "demo"
+    one_obj["1"] = "demo"
+    print(one_obj)
+
+
+
+
+# Use case of __prepare__ 
+class ProhibitDuplicateMethod(type):
+
+    @classmethod
+    def __prepare__(metacls, __name: str, __bases: Tuple[type, ...], **kwds: Any) -> Mapping[str, Any]:
+        return OneShotDict()
+        # return super().__prepare__(__name, __bases, **kwds)
+
+
+class Dodgy(metaclass=ProhibitDuplicateMethod):
+    def my_method(self):
+        pass
+
+    def my_method(self):
+        pass
+
+
+
+
+Metaclasses and inheritance .
+Like other classes metaclass also a normal class .
+So it can support inheritance like normal class .
+
+Example :
+class MetaclassA(type):
+    pass
+
+
+class MetaclassB(type):
+    pass
+
+
+class A(metaclass=MetaclassA):
+    pass
+
+
+class B(metaclass=MetaclassB):
+    pass
+
+
+
+For example if we try to inherit A and B , but it give the error
+
+class C(A,B):
+    pass
+
+Error:    class C(A,B):
+TypeError: metaclass conflict: the metaclass of a derived class must be a (non-strict) subclass of the metaclasses of all its bases
+
+
+Reason : For creating the class C , there is two option metclass  present from which class C object get created.
+Solution : Create one more metaclass which inherit A adn B and add MetaClassC explictly so it not get confuse.
+
+
+
+class MetclassC(MetaclassA,MetaclassB):
+	pass
+
+class C(A,B,metaclass=MetclassC):
+	pass
+
+
+
+
+
+summary : 
+__prepare__ : must return mapping to hold the namspace content.
+__new__ : must return a class object .
+__init__ : can configure a class object .
+__call__ : on metaclass is the instance constructor.
+
+
+
+UseCase of Metaclass : 
+Metaclass can be used to impliment namedspace descriptor . 
+Strict rules  control the interaction of metaclass with inheritance .
+User supper() wisely for cooperative metaclasses .
+
+
+####Metaclass Decorator #####
+
+Metaclass : lot of moving part : 
+what is alternative ?
+Ans : Class Decorator : a simple alternative .
+
+it is worth remainding : anything which is achieve using class Decorator can also achieve using Metaclass .
+but vice versa is not .
+
+class Decorator < meta classes 
+Prefer class decorator 
+Conceptually similar to function decorator .
+
+
+It apply class decorator after class body is process  but before the process defination bound to name of the class .
+
+# 	Example of class Decorator .
+def my_class_decorator(cls):
+    for k in vars(cls).items():
+        print(k)
+
+    return cls
+
+
+@my_class_decorator
+class Temperature:
+    def get_kelvin(self):
+        pass
+
+    def set_kelvin(self):
+
+
+# Configurable decorator with decorator factories.
+@decorated_factories(argument)
+class Decorated:
+	pass
+
+
+
+
+
+
+
+
+
+
+
+
