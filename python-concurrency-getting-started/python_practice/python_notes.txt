@@ -2419,4 +2419,128 @@ if hasattr(type(MutalbeSequence), '__subclasscheck__')
 
 
 
+issubclass() --> __subclasscheck__()  : Metaclass instance method 
+	__subclasscheck__
+		--> Can define the custom subclass relation .
+		--> Doesn't perform check for subclassing by inheritance
+
+
+isinstance() --> __isinstancecheck__() : Metaclass instance method 
+
+
+Non-transitive Subclass Relationships : 
+
+
+sub --subclass -- > Virtual Base
+Virtual Base --Not A Supper class --> Sub
+
+Example : 
+c --- > B --> A
+
+If c is subclass of  B .
+and B subclass of A. 
+Then C may not be subclass of A .
+
+list --> object --> Hashable.
+
+from collections.abc import Hashable
+>>> issubclass(object, Hashable)
+True
+>>> issubclass(list,object)
+True
+>>> issubclass(list,Hashable)
+False
+
+
+object.__hash__
+list.__hash__
+
+Method Resolution With Virtual Base : 
+	Vritual Base Class don't play a role in method resolution order .
+	
+
+Custom Metaclass 
+	__subclasscheck__
+	__isinstancecheck__
+
+Example : 
+class SwordMeta(type):
+    def __instancecheck__(self, instance):
+        return self.__subclasscheck__(type(instance))
+
+    def __subclasscheck__(self, subclass):
+        return (hasattr(subclass, "swipe") and callable(subclass.swipe)
+                and
+                hasattr(subclass, "sharpen") and callable(subclass.sharpen))
+
+
+Fortunitly standard libary support 
+abc module .
+
+ABCMeta metaclass .
+ABC base class .
+@abstractmethod decorator .
+
+
+Reliable Implimentations of 
+ __subclasscheck__
+ __instancecheck__
+in terms of __subclasshook__()
+
+
+ABCMeta.__subclasscheck__(sub), ABCMeta.__instancecheck__(sub) --> Delegate to Base.__subclasshook__(sub)
+
+Example : 
+>>> object.__subclasshook__()
+NotImplemented
+
+
+True: when subclass is a subclass of Base. 
+False : when sublcass is not a subclass of Base .
+NotImplemented : to lookup via MRO.
+
+
+Virtual Subclass Registration : 
+  Register a class as virtual subclass .
+  Base metaclass must be ABCMeta . 
+  call register(sub) metamethod .
+  
+Example :
+from abc import ABCMeta
+class Text(metaclass=ABCMeta):
+    pass
+
+Text: ABCMeta
+print(Text.register(str))
+
+
+o/p: <class 'str'>
+
+call to register return the argument .
+
+Reason: We can use it as decorator .
+from abc import ABCMeta
+class Text(metaclass=ABCMeta):
+	pass
+
+@Text.register
+class Pros:
+   pass
+
+
+Combining subclass Detection and Registration .
+
+__subclasshook__ take precedence than register 
+
+You can use both __subclasshook__ and register .
+__subclasshook__ must return NotImplemented to trigger lookup of registerted subclasses .
+  
+
+
+
+
+
+
+
+
 
