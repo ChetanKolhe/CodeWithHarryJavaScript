@@ -17,6 +17,8 @@ if __name__ == '__main__':
     f1 = pool_exec.submit(do_some_work)
     f2 = pool_exec.submit(do_some_work)
 
+
+
     print("Those are thread pool executor result ")
     try:
         print(f1.result())
