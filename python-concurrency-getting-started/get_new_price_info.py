@@ -1,3 +1,17 @@
+"""
+https://calculator.aws/pricing/1.0/ec2/manifest.json
+
+
+
+https://calculator.aws/pricing/1.0/ec2/region/ap-northeast-1/ondemand/linux/index.json
+https://calculator.aws/pricing/1.0/ec2/region/ap-northeast-1/reserved-instance/linux/index.json
+
+https://calculator.aws/pricing/1.0/datatransfer/index.json
+https://calculator.aws/pricing/1.0/ec2/region/ap-east-1/ebs/index.json
+
+https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/computesavingsplan/USD/current/compute-instance-savings-plan-ec2-calc/t3.xlarge/Asia%20Pacific%20(Hong%20Kong)/Linux/NA/Shared/index.json
+https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/computesavingsplan/USD/current/compute-instance-savings-plan-ec2-calc/c5.2xlarge/Asia%20Pacific%20(Hong%20Kong)/Linux/NA/Shared/index.json
+"""
 import requests
 import os
 import json
